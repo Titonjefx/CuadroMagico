@@ -111,14 +111,14 @@ public class Poblacion {
     }
 
     public void ordenarCromosomasPorAptitud() {
-        Collections.sort(getCromosomas(),new Comparator() {
+        Collections.sort(getCromosomas(), new Comparator() {
             @Override
             public int compare(final Object cromosoma1, final Object cromosoma2) {
-                Cromosoma chromosomeOne = (Cromosoma) cromosoma1;
-                Cromosoma chromosomeTwo = (Cromosoma) cromosoma2;
-                if (getRecursos().getFuncionDeEvaluacion().esMejor(chromosomeOne, chromosomeTwo)) {
+                Cromosoma cromosomaUno = (Cromosoma) cromosoma1;
+                Cromosoma cromosomaDos = (Cromosoma) cromosoma2;
+                if (getRecursos().getFuncionDeEvaluacion().esMejor(cromosomaUno, cromosomaDos)) {
                     return -1;
-                } else if (getRecursos().getFuncionDeEvaluacion().esMejor(chromosomeTwo, chromosomeOne)) {
+                } else if (getRecursos().getFuncionDeEvaluacion().esMejor(cromosomaDos, cromosomaUno)) {
                     return 1;
                 } else {
                     return 0;
@@ -126,5 +126,16 @@ public class Poblacion {
             }
         });
         mejorCromosoma = (Cromosoma) cromosomas.get(0);
+    }
+
+    public void mantenerConstanteElTamanoDeLaPoblacion() {
+        int tamanoDeLaPoblacion = tamanoDePoblacion();
+
+        int tamanoMaximo = getRecursos().getTamanoDeLaPoblacion();
+
+        while (tamanoDeLaPoblacion > tamanoMaximo) {
+            removerCromosoma(tamanoDeLaPoblacion - 1);
+            tamanoDeLaPoblacion--;
+        }
     }
 }

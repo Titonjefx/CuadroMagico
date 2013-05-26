@@ -8,5 +8,5 @@ package logica;
  */
 public interface Reproductor {
 
-    Poblacion evolucionar(Poblacion poblacion);
+    Poblacion evolucionar(Poblacion poblacion, Recursos recursos);
 }

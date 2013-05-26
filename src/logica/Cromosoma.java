@@ -110,4 +110,14 @@ public interface Cromosoma {
      * @return n&uacute;mero de operaciones aplicadas a este cromosoma
      */
     int numeroDeOperacionesGeneticas();
+
+    /**
+     * Regresa true si este cromosoma ha sido evaluado. False de lo contrario.
+     */
+    boolean haSidoEvaluado();
+
+    /**
+     * Establece si este cromosoma ha sido evaluado.
+     */
+    void setHaSidoEvaluado(boolean haSidoEvaluado);
 }

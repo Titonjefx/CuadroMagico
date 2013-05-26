@@ -25,12 +25,16 @@ public class CromosomaImpl implements Cromosoma {
     /**
      * Valor de aptitud de este cromosoma.
      */
-    private double valorDeAptitud;
+    private double valorDeAptitud = -1.0000000d;
     /**
      * Valor que define si este cromosoma ser&aacute; seleccionado para la
      * pr&oacute;xima generaci&oacute;n.
      */
     private boolean esSeleccionadoParaLaSiguienteGeneracion;
+    /**
+     * Representa si este cromosoma ha sido evaluado.
+     */
+    private boolean haSidoEvaluado = false;
 
     /**
      * Constructor.
@@ -146,6 +150,7 @@ public class CromosomaImpl implements Cromosoma {
     @Override
     public void setValorDeAptitud(double valorDeAptitud) {
         this.valorDeAptitud = valorDeAptitud;
+        haSidoEvaluado = true;
     }
 
     /**
@@ -165,6 +170,7 @@ public class CromosomaImpl implements Cromosoma {
                     getFuncionDeAptitud();
             if (funcionDeAptitud != null) {
                 valorDeAptitud = funcionDeAptitud.getValorDeAptitud(this);
+                haSidoEvaluado = true;
             }
         }
         return valorDeAptitud;
@@ -210,7 +216,7 @@ public class CromosomaImpl implements Cromosoma {
     public Recursos getRecursos() {
         return this.recursos;
     }
-    
+
     /**
      * Establece la referencia a los recursos del algoritmo gen&etico que posee
      * este cromosoma.
@@ -219,5 +225,18 @@ public class CromosomaImpl implements Cromosoma {
      */
     public void setRecursos(Recursos recursos) {
         this.recursos = recursos;
+    }
+
+    /**
+     * Vea la interface de Cromosoma para esta descripci&oacute;n.
+     */
+    @Override
+    public boolean haSidoEvaluado() {
+        return this.haSidoEvaluado;
+    }
+
+    @Override
+    public void setHaSidoEvaluado(boolean haSidoEvaluado) {
+        this.haSidoEvaluado = haSidoEvaluado;
     }
 }

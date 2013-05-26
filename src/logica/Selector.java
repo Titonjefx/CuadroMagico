@@ -44,8 +44,8 @@ public class Selector extends SelectorNatural {
             final Poblacion poblacionInicial,
             final Poblacion poblacionResultante) {
         if (poblacionInicial != null) {
-            int popSize = poblacionInicial.tamanoDePoblacion();
-            for (int i = 0; i < popSize; i++) {
+            int tamanoDePoblacion = poblacionInicial.tamanoDePoblacion();
+            for (int i = 0; i < tamanoDePoblacion; i++) {
                 agregar(poblacionInicial.getCromosoma(i));
             }
         }
@@ -62,12 +62,15 @@ public class Selector extends SelectorNatural {
             Collections.sort(cromosomas.getCromosomas(),
                     new Comparator() {
                         @Override
-                        public int compare(final Object cromosoma1, final Object cromosoma2) {
-                            Cromosoma chromosomeOne = (Cromosoma) cromosoma1;
-                            Cromosoma chromosomeTwo = (Cromosoma) cromosoma2;
-                            if (getRecursos().getFuncionDeEvaluacion().esMejor(chromosomeOne, chromosomeTwo)) {
+                        public int compare(final Object cromosoma1,
+                                final Object cromosoma2) {
+                            Cromosoma cromosomaUno = (Cromosoma) cromosoma1;
+                            Cromosoma cromosomaDos = (Cromosoma) cromosoma2;
+                            if (getRecursos().getFuncionDeEvaluacion()
+                                    .esMejor(cromosomaUno, cromosomaDos)) {
                                 return -1;
-                            } else if (getRecursos().getFuncionDeEvaluacion().esMejor(chromosomeTwo, chromosomeOne)) {
+                            } else if (getRecursos().getFuncionDeEvaluacion()
+                                    .esMejor(cromosomaDos, cromosomaUno)) {
                                 return 1;
                             } else {
                                 return 0;
@@ -79,7 +82,8 @@ public class Selector extends SelectorNatural {
         Cromosoma cromosomaSeleccionado;
         for (int i = 0; i < puedenSerElegidos; i++) {
             cromosomaSeleccionado = cromosomas.getCromosoma(i);
-            cromosomaSeleccionado.setEsSeleccionadoParaLaSiguienteGeneracion(true);
+            cromosomaSeleccionado.setEsSeleccionadoParaLaSiguienteGeneracion(
+                    true);
             poblacionResultante.agregarCromosoma(cromosomaSeleccionado);
         }
 
@@ -89,8 +93,10 @@ public class Selector extends SelectorNatural {
         aAgregar = tamanoRequerido - poblacionResultante.tamanoDePoblacion();
 
         for (int i = 0; i < aAgregar; i++) {
-            cromosomaSeleccionado = cromosomas.getCromosoma(i % numeroDeCromosomas);
-            cromosomaSeleccionado.setEsSeleccionadoParaLaSiguienteGeneracion(true);
+            cromosomaSeleccionado = cromosomas
+                    .getCromosoma(i % numeroDeCromosomas);
+            cromosomaSeleccionado.setEsSeleccionadoParaLaSiguienteGeneracion(
+                    true);
             poblacionResultante.agregarCromosoma(cromosomaSeleccionado);
         }
     }

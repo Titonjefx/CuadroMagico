@@ -4,6 +4,8 @@ import interfazgrafica.IGCuadroMagico;
 import java.util.HashMap;
 import java.util.Map;
 import static utilidades.MapKeyConstantes.MAP_KEY_INTERFAZ_GRAFICA;
+import static utilidades.MapKeyConstantes.MAP_KEY_PORCENTAJE_CRUCE;
+import static utilidades.MapKeyConstantes.MAP_KEY_PORCENTAJE_MUTACION;
 
 /**
  * Clase donde se realiza el algoritmo gen&eacute;tico.
@@ -31,6 +33,10 @@ public class AlgoritmoGenetico {
     public void setParametrosDeAlgoritmoGenetico(
             Map<String, Object> parametros) {
         this.parametros = parametros;
+        System.err.println("Porcentaje de cruce: "
+                + parametros.get(MAP_KEY_PORCENTAJE_CRUCE));
+        System.err.println("Porcentaje de mutacion: "
+                + parametros.get(MAP_KEY_PORCENTAJE_MUTACION));
     }
 
     /**

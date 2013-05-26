@@ -29,4 +29,11 @@ public abstract class FuncionDeAptitud {
      * cromosoma
      */
     protected abstract double evaluar(Cromosoma cromosoma);
+    
+    /**
+     * Evalua cada cromosoma de la poblacion y le establece su valor de aptitud.
+     * 
+     * @param unaPoblacion poblacion a evaluar
+     */
+    protected abstract void evaluar(Poblacion unaPoblacion);
 }

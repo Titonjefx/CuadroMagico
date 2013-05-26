@@ -1,5 +1,6 @@
 package interfazgrafica;
 
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,6 +12,8 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import logica.AlgoritmoGenetico;
 import static utilidades.MapKeyConstantes.MAP_KEY_INTERFAZ_GRAFICA;
+import static utilidades.MapKeyConstantes.MAP_KEY_PORCENTAJE_CRUCE;
+import static utilidades.MapKeyConstantes.MAP_KEY_PORCENTAJE_MUTACION;
 
 /**
  * Interfaz gr&aacute;fica para configurar y mostrar los resultados del
@@ -24,12 +27,20 @@ public class IGCuadroMagico extends JFrame {
      * Tama&ntilde;o de el cuadrado m&aacute;gico.
      */
     private int tamanoDeCuadroMagico;
+    /**
+     * Mapeo donde estan los parametros del algoritmo.
+     */
+    private Map<String, Object> parametrosDeAlgoritmo;
 
     /**
      * Crea una nueva ventana IGCuadroMagico
      */
     public IGCuadroMagico() {
         tamanoDeCuadroMagico = 3;
+        parametrosDeAlgoritmo = new HashMap<>();
+        parametrosDeAlgoritmo.put(MAP_KEY_INTERFAZ_GRAFICA, this);
+        parametrosDeAlgoritmo.put(MAP_KEY_PORCENTAJE_CRUCE, 0.4);
+        parametrosDeAlgoritmo.put(MAP_KEY_PORCENTAJE_MUTACION, 0.06);
         initComponents();
     }
 
@@ -144,13 +155,8 @@ public class IGCuadroMagico extends JFrame {
 
         AlgoritmoGenetico algoritmoGenetico = new AlgoritmoGenetico();
 
-        //Se crea y se envia la configuracion inicial establecida en la 
-        //interfaz grafica como un map de parametros.
-        Map<String, Object> parametros = new HashMap<>();
-
-        parametros.put(MAP_KEY_INTERFAZ_GRAFICA, this);
-
-        algoritmoGenetico.setParametrosDeAlgoritmoGenetico(parametros);
+        algoritmoGenetico.setParametrosDeAlgoritmoGenetico(
+                parametrosDeAlgoritmo);
 
         //Se aplica el algoritmo genetico.
         algoritmoGenetico.aplicarAlgoritmo();
@@ -163,6 +169,62 @@ public class IGCuadroMagico extends JFrame {
      * @param evt evento que se genera al ser clickeado el menu item
      */
     private void miParametrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miParametrosActionPerformed
+        final JFrame vParametrosAlgoritmo = new JFrame(
+                "Tamano de Cuadro Magico");
+
+        JLabel lbPorcentajeCruce = new JLabel("Porcentaje de Cruce: ");
+
+        SpinnerNumberModel spModeloPorcentajeCruce = new SpinnerNumberModel(
+                ((Double) parametrosDeAlgoritmo.get(MAP_KEY_PORCENTAJE_CRUCE))
+                .doubleValue(), 0.20, 0.6, 0.01);
+        final JSpinner spPorcentajeCruce = new JSpinner(
+                spModeloPorcentajeCruce);
+
+        JLabel lbPorcentajeMutacion = new JLabel("Porcentaje de Mutacion: ");
+
+        SpinnerNumberModel spModeloPorcentajeMutacion = new SpinnerNumberModel(
+                ((Double) parametrosDeAlgoritmo.get(MAP_KEY_PORCENTAJE_MUTACION))
+                .doubleValue(), 0.03, 0.1, 0.001);
+        final JSpinner spPorcentajeMutacion = new JSpinner(
+                spModeloPorcentajeMutacion);
+
+        JButton btEstablecerParametros = new JButton("Establecer");
+        btEstablecerParametros.addActionListener(
+                new java.awt.event.ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent evt) {
+                        double nuevoPorcentajeCruce = Double.parseDouble(
+                                spPorcentajeCruce.getValue().toString());
+                        double nuevoPorcentajeMutacion = Double.parseDouble(
+                                spPorcentajeMutacion.getValue().toString());
+
+                        getParametrosDeAlgoritmo().remove(MAP_KEY_PORCENTAJE_CRUCE);
+                        getParametrosDeAlgoritmo().remove(MAP_KEY_PORCENTAJE_MUTACION);
+
+                        getParametrosDeAlgoritmo().put(MAP_KEY_PORCENTAJE_CRUCE,
+                                nuevoPorcentajeCruce);
+                        getParametrosDeAlgoritmo().put(
+                                MAP_KEY_PORCENTAJE_MUTACION, nuevoPorcentajeMutacion);
+                        vParametrosAlgoritmo.setVisible(false);
+                    }
+                });
+
+        final int GRIYA_COLUMNAS = 3;
+        final int GRIYA_FILAS = 2;
+        final int GRIYA_ESPACIADO = 5;
+        GridLayout griya = new GridLayout(GRIYA_COLUMNAS, GRIYA_FILAS,
+                GRIYA_ESPACIADO, GRIYA_ESPACIADO);
+        JPanel pTamano = new JPanel(griya);
+
+        pTamano.add(lbPorcentajeCruce);
+        pTamano.add(spPorcentajeCruce);
+        pTamano.add(lbPorcentajeMutacion);
+        pTamano.add(spPorcentajeMutacion);
+        pTamano.add(btEstablecerParametros);
+        vParametrosAlgoritmo.getContentPane().add(pTamano);
+
+        vParametrosAlgoritmo.pack();
+        vParametrosAlgoritmo.setVisible(true);
     }//GEN-LAST:event_miParametrosActionPerformed
 
     /**
@@ -174,16 +236,12 @@ public class IGCuadroMagico extends JFrame {
     private void miTamanoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miTamanoActionPerformed
         final JFrame vTamanoDeCuadro = new JFrame();
 
-        JLabel lbTamano = new JLabel("Tamano de Cuadro"
-                + "Magico: ");
+        JLabel lbTamano = new JLabel("Tamano de Cuadro Magico: ");
 
-        SpinnerNumberModel spModelo =
-                new SpinnerNumberModel(3, 3, 20, 1);
-        final JSpinner spTamano = new JSpinner(
-                spModelo);
+        SpinnerNumberModel spModelo = new SpinnerNumberModel(3, 3, 20, 1);
+        final JSpinner spTamano = new JSpinner(spModelo);
 
-        JButton btEstablecerTamano = new JButton(
-                "Establecer");
+        JButton btEstablecerTamano = new JButton("Establecer");
         btEstablecerTamano.addActionListener(
                 new java.awt.event.ActionListener() {
                     @Override
@@ -202,7 +260,7 @@ public class IGCuadroMagico extends JFrame {
         pTamano.add(btEstablecerTamano);
         vTamanoDeCuadro.getContentPane().add(pTamano);
 
-        vTamanoDeCuadro.setSize(350, 80);
+        vTamanoDeCuadro.pack();
         vTamanoDeCuadro.setVisible(true);
     }//GEN-LAST:event_miTamanoActionPerformed
 
@@ -224,6 +282,10 @@ public class IGCuadroMagico extends JFrame {
      */
     public void mostrarResultadosDeAlgoritmoGenetico(
             Map<String, Object> resultadosDeAlgoritmoGenetico) {
+    }
+
+    public Map getParametrosDeAlgoritmo() {
+        return this.parametrosDeAlgoritmo;
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btEmpezar;
