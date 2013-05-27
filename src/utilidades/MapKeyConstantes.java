@@ -12,4 +12,5 @@ public class MapKeyConstantes {
     public static final String MAP_KEY_INTERFAZ_GRAFICA = "interfazGrafica";
     public static final String MAP_KEY_PORCENTAJE_CRUCE = "porcentajeCruce";
     public static final String MAP_KEY_PORCENTAJE_MUTACION = "porcentajeMutacion";
+    public static final String MAP_KEY_MATRIZ_CUADRO_MAGICO = "matrizCuadroMagico";
 }

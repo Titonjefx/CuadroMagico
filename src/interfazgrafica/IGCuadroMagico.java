@@ -12,6 +12,7 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import logica.AlgoritmoGenetico;
 import static utilidades.MapKeyConstantes.MAP_KEY_INTERFAZ_GRAFICA;
+import static utilidades.MapKeyConstantes.MAP_KEY_MATRIZ_CUADRO_MAGICO;
 import static utilidades.MapKeyConstantes.MAP_KEY_PORCENTAJE_CRUCE;
 import static utilidades.MapKeyConstantes.MAP_KEY_PORCENTAJE_MUTACION;
 
@@ -282,10 +283,17 @@ public class IGCuadroMagico extends JFrame {
      */
     public void mostrarResultadosDeAlgoritmoGenetico(
             Map<String, Object> resultadosDeAlgoritmoGenetico) {
+        
+        
+        pintarCuadroMagico((int[][])resultadosDeAlgoritmoGenetico.get(MAP_KEY_MATRIZ_CUADRO_MAGICO));
     }
 
     public Map getParametrosDeAlgoritmo() {
         return this.parametrosDeAlgoritmo;
+    }
+    
+    public void pintarCuadroMagico(int cuadroMagico[][]) {
+        
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btEmpezar;

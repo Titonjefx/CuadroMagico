@@ -4,6 +4,7 @@ import interfazgrafica.IGCuadroMagico;
 import java.util.HashMap;
 import java.util.Map;
 import static utilidades.MapKeyConstantes.MAP_KEY_INTERFAZ_GRAFICA;
+import static utilidades.MapKeyConstantes.MAP_KEY_MATRIZ_CUADRO_MAGICO;
 import static utilidades.MapKeyConstantes.MAP_KEY_PORCENTAJE_CRUCE;
 import static utilidades.MapKeyConstantes.MAP_KEY_PORCENTAJE_MUTACION;
 
@@ -47,7 +48,12 @@ public class AlgoritmoGenetico {
 
         //...
 
+        int matrizCuadroMagico[][] = new int[3][3];
+
         Map<String, Object> resultados = new HashMap<>();
+
+        resultados.put(MAP_KEY_MATRIZ_CUADRO_MAGICO, matrizCuadroMagico);
+
         ((IGCuadroMagico) parametros.get(MAP_KEY_INTERFAZ_GRAFICA))
                 .mostrarResultadosDeAlgoritmoGenetico(resultados);
     }
