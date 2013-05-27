@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import static utilidades.MapKeyConstantes.MAP_KEY_INTERFAZ_GRAFICA;
 import static utilidades.MapKeyConstantes.MAP_KEY_MATRIZ_CUADRO_MAGICO;
+import static utilidades.MapKeyConstantes.MAP_KEY_NUMERO_MAX_GENERACIONES;
 import static utilidades.MapKeyConstantes.MAP_KEY_PORCENTAJE_CRUCE;
 import static utilidades.MapKeyConstantes.MAP_KEY_PORCENTAJE_MUTACION;
 
@@ -38,6 +39,8 @@ public class AlgoritmoGenetico {
                 + parametros.get(MAP_KEY_PORCENTAJE_CRUCE));
         System.err.println("Porcentaje de mutacion: "
                 + parametros.get(MAP_KEY_PORCENTAJE_MUTACION));
+        System.err.println("Numero maximo de generaciones: "
+                + parametros.get(MAP_KEY_NUMERO_MAX_GENERACIONES));
     }
 
     /**
@@ -49,6 +52,9 @@ public class AlgoritmoGenetico {
         //...
 
         int matrizCuadroMagico[][] = new int[3][3];
+        matrizCuadroMagico[0][0] = 1;
+        matrizCuadroMagico[1][1] = 5;
+        matrizCuadroMagico[2][2] = 9;
 
         Map<String, Object> resultados = new HashMap<>();
 
