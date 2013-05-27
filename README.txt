@@ -1,0 +1,3 @@
+Cuadro magico
+
+estado: desarrollo
