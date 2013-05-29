@@ -1,13 +1,10 @@
-package logica;
+package logica_implementacion;
 
 import interfazgrafica.IGCuadroMagico;
+import java.awt.Point;
 import java.util.HashMap;
 import java.util.Map;
-import static utilidades.MapKeyConstantes.MAP_KEY_INTERFAZ_GRAFICA;
-import static utilidades.MapKeyConstantes.MAP_KEY_MATRIZ_CUADRO_MAGICO;
-import static utilidades.MapKeyConstantes.MAP_KEY_NUMERO_MAX_GENERACIONES;
-import static utilidades.MapKeyConstantes.MAP_KEY_PORCENTAJE_CRUCE;
-import static utilidades.MapKeyConstantes.MAP_KEY_PORCENTAJE_MUTACION;
+import static utilidades.MapKeyConstantes.*;
 
 /**
  * Clase donde se realiza el algoritmo gen&eacute;tico.
@@ -41,6 +38,8 @@ public class AlgoritmoGenetico {
                 + parametros.get(MAP_KEY_PORCENTAJE_MUTACION));
         System.err.println("Numero maximo de generaciones: "
                 + parametros.get(MAP_KEY_NUMERO_MAX_GENERACIONES));
+        System.err.println("Numero de cromosomas en la poblacion: "
+                + parametros.get(MAP_KEY_NUM_CROM_POBLACION));
     }
 
     /**
@@ -59,6 +58,8 @@ public class AlgoritmoGenetico {
         Map<String, Object> resultados = new HashMap<>();
 
         resultados.put(MAP_KEY_MATRIZ_CUADRO_MAGICO, matrizCuadroMagico);
+        resultados.put(MAP_KEY_LINEAS_QUE_CUMPLEN, new Point[]{new Point(0, 0),
+                    new Point(1, 1), new Point(2, 2)});
 
         ((IGCuadroMagico) parametros.get(MAP_KEY_INTERFAZ_GRAFICA))
                 .mostrarResultadosDeAlgoritmoGenetico(resultados);

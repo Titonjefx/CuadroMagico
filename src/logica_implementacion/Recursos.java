@@ -1,7 +1,13 @@
-package logica;
+package logica_implementacion;
 
 import java.util.ArrayList;
 import java.util.List;
+import logica.Cromosoma;
+import logica.FuncionDeAptitud;
+import logica.FuncionDeEvaluacion;
+import logica.OperadorGenetico;
+import logica.Reproductor;
+import logica.SelectorNatural;
 
 /**
  * Clase donde estar&aacute;n todos los recursos necesarios para el

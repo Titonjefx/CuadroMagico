@@ -1,10 +1,12 @@
-package logica;
+package logica_implementacion;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import logica.Cromosoma;
+import logica.FuncionDeEvaluacion;
 
 /**
  * Clase donde estar&aacute;n almacenados todos los cromosomas.
@@ -30,12 +32,12 @@ public class Poblacion {
      * que el algoritmo funcione
      * @param tamanoDeLaPoblacion tama&ntilde;o de la poblaci&oacute;n
      */
-    Poblacion(Recursos recursos, int tamanoDeLaPoblacion) {
+    public Poblacion(Recursos recursos, int tamanoDeLaPoblacion) {
         this.recursos = recursos;
         this.cromosomas = new ArrayList(tamanoDeLaPoblacion);
     }
 
-    Poblacion(Recursos recursos, List cromosomas) {
+    public Poblacion(Recursos recursos, List cromosomas) {
         this.recursos = recursos;
         this.cromosomas = cromosomas;
     }

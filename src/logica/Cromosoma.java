@@ -1,5 +1,7 @@
 package logica;
 
+import java.util.List;
+
 /**
  * Interfaz que define los metodos que debe implementar un Cromosoma
  * determinado.
@@ -29,6 +31,16 @@ public interface Cromosoma {
      * @param genes para este cromosoma
      */
     void setGenes(Gen[] genes);
+
+    /**
+     * Regresa la lista de genes de este cromosoma.
+     */
+    public List getListaDeGenes();
+
+    /**
+     * Establece la lista de genes de este cromosoma.
+     */
+    public void setListaDeGenes(List genes);
 
     /**
      * N&uacute;mero de Genes que contiene este cromosoma.

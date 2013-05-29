@@ -1,4 +1,10 @@
-package logica;
+package logica_implementacion;
+
+import java.util.ArrayList;
+import java.util.List;
+import logica.Cromosoma;
+import logica.FuncionDeAptitud;
+import logica.Gen;
 
 /**
  * Clase que representa un Cromosoma. Implementa la interfaz Cromosoma.
@@ -11,7 +17,8 @@ public class CromosomaImpl implements Cromosoma {
     /**
      * Arreglo de genes contenidos en este cromosoma.
      */
-    private Gen[] genes;
+    //private Gen[] genes;
+    private List genes;
     /**
      * Edad del cromosoma; se define en t&eacute;rminos de cuantas generaciones
      * ha recorrido.
@@ -39,7 +46,8 @@ public class CromosomaImpl implements Cromosoma {
     /**
      * Constructor.
      */
-    public CromosomaImpl() {
+    public CromosomaImpl(int tamano) {
+        genes = new ArrayList(tamano);
     }
 
     /**
@@ -103,7 +111,7 @@ public class CromosomaImpl implements Cromosoma {
      */
     @Override
     public Gen[] getGenes() {
-        return genes;
+        return (Gen[]) genes.toArray();
     }
 
     /**
@@ -111,6 +119,24 @@ public class CromosomaImpl implements Cromosoma {
      */
     @Override
     public void setGenes(Gen[] genes) {
+        for (int i = 0; i < genes.length; i++) {
+            this.setGen(i, genes[i]);
+        }
+    }
+
+    /**
+     * Vea la interface de Cromosoma para esta descripci&oacute;n.
+     */
+    @Override
+    public List getListaDeGenes() {
+        return genes;
+    }
+
+    /**
+     * Vea la interface de Cromosoma para esta descripci&oacute;n.
+     */
+    @Override
+    public void setListaDeGenes(List genes) {
         this.genes = genes;
     }
 
@@ -119,7 +145,7 @@ public class CromosomaImpl implements Cromosoma {
      */
     @Override
     public Gen getGen(int indice) {
-        return genes[indice];
+        return (Gen) genes.get(indice);
     }
 
     /**
@@ -129,7 +155,7 @@ public class CromosomaImpl implements Cromosoma {
      * @param gen que se establecer&aacute; en la posici&oacute;n index
      */
     public void setGen(int indice, Gen gen) {
-        genes[indice] = gen;
+        genes.set(indice, gen);
     }
 
     /**
@@ -140,7 +166,7 @@ public class CromosomaImpl implements Cromosoma {
         if (genes == null) {
             return 0;
         } else {
-            return genes.length;
+            return genes.size();
         }
     }
 
@@ -158,6 +184,9 @@ public class CromosomaImpl implements Cromosoma {
      */
     @Override
     public double getValorDeAptitud() {
+        if (!haSidoEvaluado) {
+            return this.calcularValorDeAptitud();
+        }
         return this.valorDeAptitud;
     }
 

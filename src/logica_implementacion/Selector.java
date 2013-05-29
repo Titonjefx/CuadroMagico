@@ -1,7 +1,9 @@
-package logica;
+package logica_implementacion;
 
 import java.util.Collections;
 import java.util.Comparator;
+import logica.Cromosoma;
+import logica.SelectorNatural;
 
 /**
  * Clase que representa un selector natural en el algoritmo gen&eacute;tico.

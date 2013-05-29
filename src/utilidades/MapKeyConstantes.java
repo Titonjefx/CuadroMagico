@@ -17,4 +17,6 @@ public class MapKeyConstantes {
             "matrizCuadroMagico";
     public static final String MAP_KEY_NUMERO_MAX_GENERACIONES =
             "numMaxGeneraciones";
+    public static final String MAP_KEY_LINEAS_QUE_CUMPLEN = "lineasQueCumplen";
+    public static final String MAP_KEY_NUM_CROM_POBLACION = "numCromPoblacion";
 }

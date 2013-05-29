@@ -1,4 +1,7 @@
-package logica;
+package logica_implementacion;
+
+import logica.Cromosoma;
+import logica.Piscina;
 
 /**
  * Clase que funciona como una colecci&oacute;n de cromosomas.

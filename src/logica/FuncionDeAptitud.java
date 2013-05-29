@@ -1,5 +1,7 @@
 package logica;
 
+import logica_implementacion.Poblacion;
+
 /**
  * Clase que define los m&eacute;todos que debe tener una funci&oacute;n de
  * aptitud. Algunos son implementados.
@@ -28,12 +30,12 @@ public abstract class FuncionDeAptitud {
      * @return positivo flotante que representa el valor de aptitud del
      * cromosoma
      */
-    protected abstract double evaluar(Cromosoma cromosoma);
-    
+    public abstract double evaluar(Cromosoma cromosoma);
+
     /**
      * Evalua cada cromosoma de la poblacion y le establece su valor de aptitud.
-     * 
+     *
      * @param unaPoblacion poblacion a evaluar
      */
-    protected abstract void evaluar(Poblacion unaPoblacion);
+    public abstract void evaluar(Poblacion unaPoblacion);
 }

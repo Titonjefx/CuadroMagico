@@ -33,6 +33,7 @@ public class CuadroMagico {
         }
 
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new IGCuadroMagico().setVisible(true);
             }

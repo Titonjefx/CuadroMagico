@@ -1,7 +1,12 @@
-package logica;
+package logica_implementacion;
 
 import java.util.Iterator;
 import java.util.List;
+import logica.Cromosoma;
+import logica.FuncionDeAptitud;
+import logica.OperadorGenetico;
+import logica.Reproductor;
+import logica.SelectorNatural;
 
 /**
  * Clase que representa el reproductor en el algoritmo gen&eacute;tico.
@@ -136,86 +141,70 @@ public class RepreductorImpl implements Reproductor {
     }
 
     /*public Poblacion evaluacionDeFuncionDeAptitud(Recursos unosRecursos,
-            FuncionDeAptitud funcionDeAptitud, Poblacion unaPoblacion) {
-        if (funcionDeAptitud != null) {
+     FuncionDeAptitud funcionDeAptitud, Poblacion unaPoblacion) {
+     if (funcionDeAptitud != null) {
 
-            //remove chromosomes which have been already evaluated
-            Poblacion poblacion = removerCromosomasEvaluados(unaPoblacion, unosRecursos);
+     //remove chromosomes which have been already evaluated
+     Poblacion poblacion = removerCromosomasEvaluados(unaPoblacion, unosRecursos);
 
-            if (unosRecursos.esConstanteElTamanoDePoblacion()) {
-                poblacion.mantenerConstanteElTamanoDeLaPoblacion();
-            }
+     if (unosRecursos.esConstanteElTamanoDePoblacion()) {
+     poblacion.mantenerConstanteElTamanoDeLaPoblacion();
+     }
 
-            if (poblacion.tamanoDePoblacion() > 0) {
-                funcionDeAptitud.evaluar(poblacion);
-            }
-            //Remove the fitness value and add evaluated elements to
-            //the List with NO_FITNESS_VALUE
-            //and add the NEW elements to pop
-            Iterator it2 = poblacion.getCromosomas().iterator();
-            while (it2.hasNext()) {
-                Cromosoma cromosoma0 = (Cromosoma) it2.next();
-                if (!unaPoblacion.getCromosomas().contains((Cromosoma) cromosoma0)) {
-                    unaPoblacion.agregarCromosoma((Cromosoma) cromosoma0);
-                }
-            }
-            //remove chromosomes which have been already evaluated
-            unaPoblacion = removerCromosomasNoEvaluados(unaPoblacion, unosRecursos);
-        }
-        return unaPoblacion;
-    }
+     if (poblacion.tamanoDePoblacion() > 0) {
+     funcionDeAptitud.evaluar(poblacion);
+     }
+     //Remove the fitness value and add evaluated elements to
+     //the List with NO_FITNESS_VALUE
+     //and add the NEW elements to pop
+     Iterator it2 = poblacion.getCromosomas().iterator();
+     while (it2.hasNext()) {
+     Cromosoma cromosoma0 = (Cromosoma) it2.next();
+     if (!unaPoblacion.getCromosomas().contains((Cromosoma) cromosoma0)) {
+     unaPoblacion.agregarCromosoma((Cromosoma) cromosoma0);
+     }
+     }
+     //remove chromosomes which have been already evaluated
+     unaPoblacion = removerCromosomasNoEvaluados(unaPoblacion, unosRecursos);
+     }
+     return unaPoblacion;
+     }
 
-    private Poblacion removerCromosomasEvaluados(Poblacion poblacionDeEntrada,
-            Recursos unosRecursos) {
-        Poblacion poblacionDeSalida = new Poblacion(unosRecursos, 0);
-        Cromosoma cromosomaSeleccionados;
-        for (int i = 0; i < poblacionDeEntrada.tamanoDePoblacion(); i++) {
-            cromosomaSeleccionados = poblacionDeEntrada.getCromosoma(i);
-            if (!cromosomaSeleccionados.haSidoEvaluado()) {
-                poblacionDeSalida.agregarCromosoma(cromosomaSeleccionados);
-            }
-        }
-        return poblacionDeSalida;
-    }
+     private Poblacion removerCromosomasEvaluados(Poblacion poblacionDeEntrada,
+     Recursos unosRecursos) {
+     Poblacion poblacionDeSalida = new Poblacion(unosRecursos, 0);
+     Cromosoma cromosomaSeleccionados;
+     for (int i = 0; i < poblacionDeEntrada.tamanoDePoblacion(); i++) {
+     cromosomaSeleccionados = poblacionDeEntrada.getCromosoma(i);
+     if (!cromosomaSeleccionados.haSidoEvaluado()) {
+     poblacionDeSalida.agregarCromosoma(cromosomaSeleccionados);
+     }
+     }
+     return poblacionDeSalida;
+     }
 
-    private Poblacion removerCromosomasNoEvaluados(Poblacion poblacionDeEntrada,
-            Recursos unosRecursos) {
-        Poblacion poblacionDeSalida = new Poblacion(unosRecursos, 0);
-        Cromosoma cromosomaSeleccionados;
-        for (int i = 0; i < poblacionDeEntrada.tamanoDePoblacion(); i++) {
-            cromosomaSeleccionados = poblacionDeEntrada.getCromosoma(i);
-            if (cromosomaSeleccionados.haSidoEvaluado()) {
-                poblacionDeSalida.agregarCromosoma(cromosomaSeleccionados);
-            }
-        }
-        return poblacionDeSalida;
-    }
+     private Poblacion removerCromosomasNoEvaluados(Poblacion poblacionDeEntrada,
+     Recursos unosRecursos) {
+     Poblacion poblacionDeSalida = new Poblacion(unosRecursos, 0);
+     Cromosoma cromosomaSeleccionados;
+     for (int i = 0; i < poblacionDeEntrada.tamanoDePoblacion(); i++) {
+     cromosomaSeleccionados = poblacionDeEntrada.getCromosoma(i);
+     if (cromosomaSeleccionados.haSidoEvaluado()) {
+     poblacionDeSalida.agregarCromosoma(cromosomaSeleccionados);
+     }
+     }
+     return poblacionDeSalida;
+     }
 
-    protected void actualizarCromosomas(Poblacion unaPoblacion, Recursos unosRecursos) {
-        int tamanoActualDePoblacion = unaPoblacion.tamanoDePoblacion();
+     protected void actualizarCromosomas(Poblacion unaPoblacion, Recursos unosRecursos) {
+     int tamanoActualDePoblacion = unaPoblacion.tamanoDePoblacion();
 
-        FuncionDeAptitud funcionDeAptitud = unosRecursos.getFuncionDeAptitud();
-        if (funcionDeAptitud == null) {
-            for (int i = 0; i < tamanoActualDePoblacion; i++) {
-                Cromosoma chrom = unaPoblacion.getCromosoma(i);
-                chrom.getValorDeAptitud();
-            }
-        }
-    }*/
-
-    /**
-     * TODO esto debe ir en funcion de aptitud impl.
-     *
-     * @param poblacion
-     * @param funcionDeAptitud
-     */
-    public void evaluar(Poblacion poblacion, FuncionDeAptitud funcionDeAptitud) {
-        Iterator iteradorCromosomas = poblacion.getIterator();
-        Cromosoma cromosoma;
-        while (iteradorCromosomas.hasNext()) {
-            cromosoma = (Cromosoma) iteradorCromosomas.next();
-            double valorDeAptitud = funcionDeAptitud.getValorDeAptitud(cromosoma);
-            cromosoma.setValorDeAptitud(valorDeAptitud);
-        }
-    }
+     FuncionDeAptitud funcionDeAptitud = unosRecursos.getFuncionDeAptitud();
+     if (funcionDeAptitud == null) {
+     for (int i = 0; i < tamanoActualDePoblacion; i++) {
+     Cromosoma chrom = unaPoblacion.getCromosoma(i);
+     chrom.getValorDeAptitud();
+     }
+     }
+     }*/
 }

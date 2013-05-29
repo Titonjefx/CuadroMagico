@@ -32,11 +32,12 @@ public interface Gen {
     /**
      * Cambia el valor interno de este Gen a un valor aleatorio.
      */
-    void setToRandomValue();
+    void setAValorAleatorio();
 
     /**
      * @return una representaci&oacute;n en texto de este Gen.
      */
+    @Override
     String toString();
 
     /**

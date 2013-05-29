@@ -3,13 +3,11 @@ package interfazgrafica;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
-import java.awt.Frame;
 import java.awt.GridLayout;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.util.HashMap;
 import java.util.Map;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -17,12 +15,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
-import logica.AlgoritmoGenetico;
-import static utilidades.MapKeyConstantes.MAP_KEY_INTERFAZ_GRAFICA;
-import static utilidades.MapKeyConstantes.MAP_KEY_MATRIZ_CUADRO_MAGICO;
-import static utilidades.MapKeyConstantes.MAP_KEY_NUMERO_MAX_GENERACIONES;
-import static utilidades.MapKeyConstantes.MAP_KEY_PORCENTAJE_CRUCE;
-import static utilidades.MapKeyConstantes.MAP_KEY_PORCENTAJE_MUTACION;
+import logica_implementacion.AlgoritmoGenetico;
+import static utilidades.MapKeyConstantes.*;
 
 /**
  * Interfaz gr&aacute;fica para configurar y mostrar los resultados del
@@ -51,6 +45,7 @@ public class IGCuadroMagico extends JFrame {
         parametrosDeAlgoritmo.put(MAP_KEY_PORCENTAJE_CRUCE, 0.4);
         parametrosDeAlgoritmo.put(MAP_KEY_PORCENTAJE_MUTACION, 0.06);
         parametrosDeAlgoritmo.put(MAP_KEY_NUMERO_MAX_GENERACIONES, 100);
+        parametrosDeAlgoritmo.put(MAP_KEY_NUM_CROM_POBLACION, 100);
         initComponents();
     }
 
@@ -72,7 +67,6 @@ public class IGCuadroMagico extends JFrame {
         miTamano = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         miAcercaDe = new javax.swing.JMenuItem();
-        miIndicaciones = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -120,9 +114,6 @@ public class IGCuadroMagico extends JFrame {
         });
         jMenu2.add(miAcercaDe);
 
-        miIndicaciones.setText("Indicaciones");
-        jMenu2.add(miIndicaciones);
-
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
@@ -165,8 +156,8 @@ public class IGCuadroMagico extends JFrame {
      * @param evt evento que se genera al ser clickeado el menu item
      */
     private void miParametrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miParametrosActionPerformed
-        final JFrame vParametrosAlgoritmo = new JFrame(
-                "Tamano de Cuadro Magico");
+        final JDialog vParametrosAlgoritmo = new JDialog(this, "Parametros de "
+                + "Cuadro Magico", true);
 
         JLabel lbPorcentajeCruce = new JLabel("Porcentaje de Cruce (x100%): ");
 
@@ -180,8 +171,8 @@ public class IGCuadroMagico extends JFrame {
                 + "(x100%): ");
 
         SpinnerNumberModel spModeloPorcentajeMutacion = new SpinnerNumberModel(
-                ((Double) parametrosDeAlgoritmo
-                .get(MAP_KEY_PORCENTAJE_MUTACION)).doubleValue(), 0.03, 0.1,
+                ((Double) parametrosDeAlgoritmo.get(MAP_KEY_PORCENTAJE_MUTACION))
+                .doubleValue(), 0.03, 0.1,
                 0.001);
         final JSpinner spPorcentajeMutacion = new JSpinner(
                 spModeloPorcentajeMutacion);
@@ -190,11 +181,21 @@ public class IGCuadroMagico extends JFrame {
                 "Numero Maximo de Generaciones: ");
 
         SpinnerNumberModel spModeloNumMaxGeneraciones = new SpinnerNumberModel(
-                ((Integer) parametrosDeAlgoritmo
-                .get(MAP_KEY_NUMERO_MAX_GENERACIONES)).intValue(), 100, 10000,
+                ((Integer) parametrosDeAlgoritmo.get(
+                MAP_KEY_NUMERO_MAX_GENERACIONES)).intValue(), 100, 10000,
                 10);
         final JSpinner spNumMaxGeneraciones = new JSpinner(
                 spModeloNumMaxGeneraciones);
+
+        JLabel lbNumCromPoblacion = new JLabel(
+                "Numero de Cromosomas en la Poblacion: ");
+
+        SpinnerNumberModel spModeloNumCromPoblacion = new SpinnerNumberModel(
+                ((Integer) parametrosDeAlgoritmo.get(
+                MAP_KEY_NUM_CROM_POBLACION)).intValue(), 100, 500,
+                1);
+        final JSpinner spNumCromPoblacion = new JSpinner(
+                spModeloNumCromPoblacion);
 
         JButton btEstablecerParametros = new JButton("Establecer");
         btEstablecerParametros.addActionListener(
@@ -207,6 +208,8 @@ public class IGCuadroMagico extends JFrame {
                                 spPorcentajeMutacion.getValue().toString());
                         int nuevoNumMaxGeneraciones = Integer.parseInt(
                                 spNumMaxGeneraciones.getValue().toString());
+                        int nuevoNumCromPoblacion = Integer.parseInt(
+                                spNumCromPoblacion.getValue().toString());
 
                         getParametrosDeAlgoritmo().remove(
                                 MAP_KEY_PORCENTAJE_CRUCE);
@@ -214,6 +217,8 @@ public class IGCuadroMagico extends JFrame {
                                 MAP_KEY_PORCENTAJE_MUTACION);
                         getParametrosDeAlgoritmo().remove(
                                 MAP_KEY_NUMERO_MAX_GENERACIONES);
+                        getParametrosDeAlgoritmo().remove(
+                                MAP_KEY_NUM_CROM_POBLACION);
 
                         getParametrosDeAlgoritmo().put(MAP_KEY_PORCENTAJE_CRUCE,
                                 nuevoPorcentajeCruce);
@@ -223,12 +228,15 @@ public class IGCuadroMagico extends JFrame {
                         getParametrosDeAlgoritmo().put(
                                 MAP_KEY_NUMERO_MAX_GENERACIONES,
                                 nuevoNumMaxGeneraciones);
+                        getParametrosDeAlgoritmo().put(
+                                MAP_KEY_NUM_CROM_POBLACION,
+                                nuevoNumCromPoblacion);
                         vParametrosAlgoritmo.setVisible(false);
                     }
                 });
 
         final int GRIYA_COLUMNAS = 2;
-        final int GRIYA_FILAS = 4;
+        final int GRIYA_FILAS = 5;
         final int GRIYA_ESPACIADO = 5;
         GridLayout griya = new GridLayout(GRIYA_FILAS, GRIYA_COLUMNAS,
                 GRIYA_ESPACIADO, GRIYA_ESPACIADO);
@@ -240,6 +248,8 @@ public class IGCuadroMagico extends JFrame {
         pTamano.add(spPorcentajeMutacion);
         pTamano.add(lbNumMaxGeneraciones);
         pTamano.add(spNumMaxGeneraciones);
+        pTamano.add(lbNumCromPoblacion);
+        pTamano.add(spNumCromPoblacion);
         pTamano.add(btEstablecerParametros);
         vParametrosAlgoritmo.getContentPane().add(pTamano);
 
@@ -254,7 +264,8 @@ public class IGCuadroMagico extends JFrame {
      * @param evt evento que se genera al ser clickeado el menu item
      */
     private void miTamanoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miTamanoActionPerformed
-        final JFrame vTamanoDeCuadro = new JFrame();
+        final JDialog vTamanoDeCuadro = new JDialog(this, "Tamano de Cuadro "
+                + "Magico", true);
 
         JLabel lbTamano = new JLabel("Tamano de Cuadro Magico: ");
 
@@ -307,7 +318,7 @@ public class IGCuadroMagico extends JFrame {
         JPanel pInformacion = new JPanel(new GridLayout(8, 1));
         JPanel pBoton = new JPanel(new FlowLayout());
 
-        final JDialog dgAcercaDe = new JDialog(new Frame(), "Acerca de...",
+        final JDialog dgAcercaDe = new JDialog(this, "Acerca de...",
                 true);
 
         pInformacion.add(lbTitulo);
@@ -358,7 +369,9 @@ public class IGCuadroMagico extends JFrame {
 
 
         pintarCuadroMagico((int[][]) resultadosDeAlgoritmoGenetico.get(
-                MAP_KEY_MATRIZ_CUADRO_MAGICO));
+                MAP_KEY_MATRIZ_CUADRO_MAGICO),
+                (Point[]) resultadosDeAlgoritmoGenetico.get(
+                MAP_KEY_LINEAS_QUE_CUMPLEN));
     }
 
     /**
@@ -377,19 +390,35 @@ public class IGCuadroMagico extends JFrame {
      *
      * @param cuadroMagico matriz de n&uacute;meros
      */
-    public void pintarCuadroMagico(int cuadroMagico[][]) {
+    public void pintarCuadroMagico(int cuadroMagico[][],
+            Point puntosQueCumplen[]) {
         pPanelDeCuadroMagico.removeAll();
-        pPanelDeCuadroMagico.setLayout(new GridLayout(cuadroMagico.length, cuadroMagico[0].length, 3, 3));
+        pPanelDeCuadroMagico.setLayout(new GridLayout(cuadroMagico.length,
+                cuadroMagico[0].length, 5, 5));
 
         JLabel lbMatrizCuadroMagico[][] = new JLabel[cuadroMagico.length][cuadroMagico[0].length];
+        JPanel pMatrizColores[][] = new JPanel[cuadroMagico.length][cuadroMagico[0].length];
 
         for (int i = 0; i < cuadroMagico.length; i++) {
             for (int j = 0; j < cuadroMagico[i].length; j++) {
 
                 lbMatrizCuadroMagico[i][j] = new JLabel(String.valueOf(
                         cuadroMagico[i][j]), JLabel.CENTER);
-                lbMatrizCuadroMagico[i][j].setBackground(Color.RED);
-                pPanelDeCuadroMagico.add(lbMatrizCuadroMagico[i][j]);
+                lbMatrizCuadroMagico[i][j].setForeground(Color.white);
+                pMatrizColores[i][j] = new JPanel(new BorderLayout());
+                pMatrizColores[i][j].setBackground(Color.LIGHT_GRAY);
+                pMatrizColores[i][j].add(lbMatrizCuadroMagico[i][j],
+                        BorderLayout.CENTER);
+                pPanelDeCuadroMagico.add(pMatrizColores[i][j]);
+            }
+        }
+
+        //Pintamos las columnas, filas o diagonales cuya suma sea igual que las
+        //demas
+        for (int i = 0; i < puntosQueCumplen.length; i++) {
+            if (puntosQueCumplen[i] != null) {
+                pMatrizColores[puntosQueCumplen[i].x][puntosQueCumplen[i].y]
+                        .setBackground(new Color(39, 123, 237));
             }
         }
         this.paintAll(this.getGraphics());
@@ -400,7 +429,6 @@ public class IGCuadroMagico extends JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem miAcercaDe;
-    private javax.swing.JMenuItem miIndicaciones;
     private javax.swing.JMenuItem miParametros;
     private javax.swing.JMenuItem miTamano;
     private javax.swing.JPanel pPanelDeCuadroMagico;

@@ -1,6 +1,7 @@
 package logica;
 
 import java.util.List;
+import logica_implementacion.Poblacion;
 
 /**
  * Clase que define los m&eacute;todos que debe implementar un operador

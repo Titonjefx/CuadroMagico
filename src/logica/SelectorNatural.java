@@ -1,5 +1,8 @@
 package logica;
 
+import logica_implementacion.Poblacion;
+import logica_implementacion.Recursos;
+
 /**
  * Define los m&eacute;todos que deben ser implementados por un selector
  * natural. Implementa algunos de ellos.

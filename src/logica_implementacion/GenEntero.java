@@ -1,4 +1,6 @@
-package logica;
+package logica_implementacion;
+
+import logica.Gen;
 
 /**
  * Clase que representa a un Gen cuyos alelos son n&uacute;meros enteros.
@@ -64,7 +66,7 @@ public class GenEntero implements Gen {
      * l&iacute;mite inferior y el l&iacute;mite superior.
      */
     @Override
-    public void setToRandomValue() {
+    public void setAValorAleatorio() {
         double valorAleatorio = ((long) limiteSuperior - (long) limiteInferior)
                 * Math.random()
                 + limiteInferior;
