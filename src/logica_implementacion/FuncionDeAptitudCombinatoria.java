@@ -2,12 +2,15 @@ package logica_implementacion;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import logica.Cromosoma;
 import logica.FuncionDeAptitud;
 import logica.Gen;
 
-public class FuncionDeAptitudIngenua extends FuncionDeAptitud {
+/**
+ *
+ * @author jhonacd
+ */
+public class FuncionDeAptitudCombinatoria extends FuncionDeAptitud {
 
     /**
      * Vea la interface de FuncionDeAptitud para esta descripci&oacute;n.
@@ -19,16 +22,8 @@ public class FuncionDeAptitudIngenua extends FuncionDeAptitud {
     public double evaluar(Cromosoma cromosoma) {
         int numeroDeGenes = cromosoma.tamano();
         Gen genes[] = cromosoma.getGenes();
-        List alelosSinRepetir = new ArrayList();
-        for (int i = 0; i < numeroDeGenes; i++) {
-            if (!alelosSinRepetir.contains(genes[i].getAlelo())) {
-                alelosSinRepetir.add(genes[i].getAlelo());
-            }
-        }
-
-        double p1 = alelosSinRepetir.size() / numeroDeGenes;
-
         ArrayList sumasPorLista = new ArrayList((numeroDeGenes * 2) + 2);
+
         for (int i = 0; i < numeroDeGenes; i++) {
             for (int j = 0; j < numeroDeGenes; j++) {
                 int pos = (i - 1) * numeroDeGenes + j;
@@ -58,10 +53,10 @@ public class FuncionDeAptitudIngenua extends FuncionDeAptitud {
             }
         }
 
-        double p2 = (((numeroDeGenes * 2) + 1) + sumasPorListaSinRepetir.size())
+        double p = (((numeroDeGenes * 2) + 1) + sumasPorListaSinRepetir.size())
                 / ((numeroDeGenes * 2) + 2);
 
-        return p1 + p2;
+        return p;
     }
 
     /**

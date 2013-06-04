@@ -47,9 +47,9 @@ public class GenEntero implements Gen {
      */
     @Override
     public Gen nuevoGen() {
-        GenEntero result = new GenEntero(limiteInferior,
+        GenEntero nuevoGen = new GenEntero(limiteInferior,
                 limiteSuperior);
-        return result;
+        return nuevoGen;
     }
 
     /**
@@ -71,21 +71,6 @@ public class GenEntero implements Gen {
                 * Math.random()
                 + limiteInferior;
         setAlelo(new Integer((int) Math.round(valorAleatorio)));
-    }
-
-    /**
-     * Vea la interface de Gen para esta descripci&oacute;n.
-     */
-    @Override
-    public void aplicarMutacion() {
-        double rango = ((long) limiteSuperior - (long) limiteInferior)
-                * Math.random();
-        if (getAlelo() == null) {
-            setAlelo(new Integer((int) rango + limiteInferior));
-        } else {
-            int nuevoValor = (int) Math.round(intValue() + rango);
-            setAlelo(new Integer(nuevoValor));
-        }
     }
 
     /**

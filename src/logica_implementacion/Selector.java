@@ -39,12 +39,12 @@ public class Selector extends SelectorNatural {
     }
 
     /**
-     * Vea la interface de SelectorNatural para esta descripci&oacute;n.
+     * Los cromosomas con mejor aptitud pasaran.
      */
     @Override
     public void seleccionar(final int numeroDeSeleccionados,
             final Poblacion poblacionInicial,
-            final Poblacion poblacionResultante) {
+            final PiscinaDeCromosomas piscinaDeCromosomas) {
         if (poblacionInicial != null) {
             int tamanoDePoblacion = poblacionInicial.tamanoDePoblacion();
             for (int i = 0; i < tamanoDePoblacion; i++) {
@@ -53,6 +53,7 @@ public class Selector extends SelectorNatural {
         }
         int puedenSerElegidos;
         int numeroDeCromosomas = cromosomas.tamanoDePoblacion();
+        
         if (numeroDeSeleccionados > numeroDeCromosomas) {
             puedenSerElegidos = numeroDeCromosomas;
         } else {
@@ -86,20 +87,20 @@ public class Selector extends SelectorNatural {
             cromosomaSeleccionado = cromosomas.getCromosoma(i);
             cromosomaSeleccionado.setEsSeleccionadoParaLaSiguienteGeneracion(
                     true);
-            poblacionResultante.agregarCromosoma(cromosomaSeleccionado);
+            piscinaDeCromosomas.agregarCromosoma(cromosomaSeleccionado);
         }
 
         //si se requiere seleccionar mas cromosomas de los que hay en la
         //poblacion actual
         int aAgregar;
-        aAgregar = tamanoRequerido - poblacionResultante.tamanoDePoblacion();
+        aAgregar = tamanoRequerido - piscinaDeCromosomas.tamano();
 
         for (int i = 0; i < aAgregar; i++) {
             cromosomaSeleccionado = cromosomas
                     .getCromosoma(i % numeroDeCromosomas);
             cromosomaSeleccionado.setEsSeleccionadoParaLaSiguienteGeneracion(
                     true);
-            poblacionResultante.agregarCromosoma(cromosomaSeleccionado);
+            piscinaDeCromosomas.agregarCromosoma(cromosomaSeleccionado);
         }
     }
 

@@ -1,7 +1,7 @@
 package logica;
 
 import java.util.List;
-import logica_implementacion.Poblacion;
+import logica_implementacion.PiscinaDeCromosomas;
 
 /**
  * Clase que define los m&eacute;todos que debe implementar un operador
@@ -14,11 +14,11 @@ public interface OperadorGenetico {
     /**
      * Aplica el operador genetico a una poblaci&oacute;n de cromosomas
      *
-     * @param poblacion poblaci&oacute;n a la que se le aplicar&aacute;n los
+     * @param piscinaDeCromosomas cromosomas a los que se les aplicar&aacute; los
      * operadores gen&eacute;ticos
      * @param cromosomasCandidatos cromosomas elegidos para pasar a la siguiente
      * generaci&oacute;n
      */
-    public void operar(final Poblacion poblacion,
+    public void operar(final PiscinaDeCromosomas piscinaDeCromosomas,
             final List cromosomasCandidatos);
 }

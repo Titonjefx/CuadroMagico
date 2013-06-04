@@ -63,6 +63,16 @@ public class Recursos {
      * Tama&ntilde;o de la poblaci&oacute;n.
      */
     private int tamanoDeLaPoblacion;
+    /**
+     * Porcentaje de mutaci&oacute;n del algoritmo gen&eacute;tico.
+     */
+    private double porcentajeDeMutacion;
+    /**
+     * N&uacute;mero de cromosomas que se seleccionan para ser ingresados a la
+     * piscina de cromosomas y aplicarles los operadores gen&eacute;ticos
+     * posteriormente.
+     */
+    private int numeroDeCromosomasAReproducir;
 
     /**
      * Constructor
@@ -300,5 +310,22 @@ public class Recursos {
      */
     public Reproductor getReproductor() {
         return reproductor;
+    }
+
+    public void setPorcentajeDeMutacion(double porcentajeDeMutacion) {
+        this.porcentajeDeMutacion = porcentajeDeMutacion;
+    }
+
+    public double getPorcentajeDeMutacion() {
+        return this.porcentajeDeMutacion;
+    }
+
+    public int getNumeroDeCromosomasAReproducir() {
+        return numeroDeCromosomasAReproducir;
+    }
+    
+    public void setNumeroDeCromosomasAReproducir(
+            int numeroDeCromosomasAReproducir) {
+        this.numeroDeCromosomasAReproducir = numeroDeCromosomasAReproducir;
     }
 }

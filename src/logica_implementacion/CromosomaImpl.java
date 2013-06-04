@@ -1,7 +1,5 @@
 package logica_implementacion;
 
-import java.util.ArrayList;
-import java.util.List;
 import logica.Cromosoma;
 import logica.FuncionDeAptitud;
 import logica.Gen;
@@ -17,8 +15,7 @@ public class CromosomaImpl implements Cromosoma {
     /**
      * Arreglo de genes contenidos en este cromosoma.
      */
-    //private Gen[] genes;
-    private List genes;
+    private Gen[] genes;
     /**
      * Edad del cromosoma; se define en t&eacute;rminos de cuantas generaciones
      * ha recorrido.
@@ -47,7 +44,7 @@ public class CromosomaImpl implements Cromosoma {
      * Constructor.
      */
     public CromosomaImpl(int tamano) {
-        genes = new ArrayList(tamano);
+        genes = new Gen[tamano];
     }
 
     /**
@@ -111,24 +108,6 @@ public class CromosomaImpl implements Cromosoma {
      */
     @Override
     public Gen[] getGenes() {
-        return (Gen[]) genes.toArray();
-    }
-
-    /**
-     * Vea la interface de Cromosoma para esta descripci&oacute;n.
-     */
-    @Override
-    public void setGenes(Gen[] genes) {
-        for (int i = 0; i < genes.length; i++) {
-            this.setGen(i, genes[i]);
-        }
-    }
-
-    /**
-     * Vea la interface de Cromosoma para esta descripci&oacute;n.
-     */
-    @Override
-    public List getListaDeGenes() {
         return genes;
     }
 
@@ -136,7 +115,7 @@ public class CromosomaImpl implements Cromosoma {
      * Vea la interface de Cromosoma para esta descripci&oacute;n.
      */
     @Override
-    public void setListaDeGenes(List genes) {
+    public void setGenes(Gen[] genes) {
         this.genes = genes;
     }
 
@@ -145,7 +124,7 @@ public class CromosomaImpl implements Cromosoma {
      */
     @Override
     public Gen getGen(int indice) {
-        return (Gen) genes.get(indice);
+        return genes[indice];
     }
 
     /**
@@ -155,7 +134,7 @@ public class CromosomaImpl implements Cromosoma {
      * @param gen que se establecer&aacute; en la posici&oacute;n index
      */
     public void setGen(int indice, Gen gen) {
-        genes.set(indice, gen);
+        genes[indice] = gen;
     }
 
     /**
@@ -166,7 +145,7 @@ public class CromosomaImpl implements Cromosoma {
         if (genes == null) {
             return 0;
         } else {
-            return genes.size();
+            return genes.length;
         }
     }
 
@@ -232,7 +211,9 @@ public class CromosomaImpl implements Cromosoma {
     protected void iniciarAPartirDeUnGen(Gen gen) {
         int tamano = tamano();
         for (int i = 0; i < tamano; i++) {
-            setGen(i, gen.nuevoGen());
+            Gen nuevoGen = gen.nuevoGen();
+            nuevoGen.setAValorAleatorio();
+            setGen(i, nuevoGen);
         }
     }
 
@@ -267,5 +248,23 @@ public class CromosomaImpl implements Cromosoma {
     @Override
     public void setHaSidoEvaluado(boolean haSidoEvaluado) {
         this.haSidoEvaluado = haSidoEvaluado;
+    }
+
+    @Override
+    public Cromosoma clonar() {
+        Cromosoma copia = new CromosomaImpl(tamano());
+        copia.setEdad(getEdad());
+        copia.setEsSeleccionadoParaLaSiguienteGeneracion(
+                esSeleccionadoParaLaSiguienteGeneracion());
+        copia.setHaSidoEvaluado(haSidoEvaluado());
+        copia.setValorDeAptitud(getValorDeAptitud());
+
+        Gen nuevosGenes[] = new Gen[tamano()];
+        for (int i = 0; i < tamano(); i++) {
+            nuevosGenes[i] = getGen(i).nuevoGen();
+            nuevosGenes[i].setAlelo(getGen(i).getAlelo());
+        }
+
+        return copia;
     }
 }

@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import logica.Cromosoma;
 import logica.FuncionDeEvaluacion;
+import logica.Gen;
 
 /**
  * Clase donde estar&aacute;n almacenados todos los cromosomas.
@@ -24,6 +25,7 @@ public class Poblacion {
      */
     private Cromosoma mejorCromosoma;
     private Recursos recursos;
+    private int tamanoDePoblacion;
 
     /**
      * Constructor.
@@ -35,19 +37,23 @@ public class Poblacion {
     public Poblacion(Recursos recursos, int tamanoDeLaPoblacion) {
         this.recursos = recursos;
         this.cromosomas = new ArrayList(tamanoDeLaPoblacion);
+        this.tamanoDePoblacion = tamanoDeLaPoblacion;
     }
 
     public Poblacion(Recursos recursos, List cromosomas) {
         this.recursos = recursos;
         this.cromosomas = cromosomas;
+        this.tamanoDePoblacion = cromosomas.size();
     }
 
     public void agregarCromosoma(Cromosoma cromosoma) {
         this.cromosomas.add(cromosoma);
+        tamanoDePoblacion++;
     }
 
     public void agregarCromosomas(Poblacion poblacion) {
         this.cromosomas.addAll(poblacion.getCromosomas());
+        tamanoDePoblacion += poblacion.getCromosomas().size();
     }
 
     public List getCromosomas() {
@@ -56,6 +62,7 @@ public class Poblacion {
 
     public void setCromosomas(List cromosomas) {
         this.cromosomas = cromosomas;
+        tamanoDePoblacion = cromosomas.size();
     }
 
     public Cromosoma getCromosoma(int indice) {
@@ -67,7 +74,7 @@ public class Poblacion {
     }
 
     public int tamanoDePoblacion() {
-        return cromosomas.size();
+        return tamanoDePoblacion;
     }
 
     public Iterator getIterator() {
@@ -110,6 +117,7 @@ public class Poblacion {
 
     public void removerCromosoma(int indice) {
         cromosomas.remove(indice);
+        tamanoDePoblacion--;
     }
 
     public void ordenarCromosomasPorAptitud() {
@@ -129,15 +137,44 @@ public class Poblacion {
         });
         mejorCromosoma = (Cromosoma) cromosomas.get(0);
     }
+    
+    public Cromosoma getMejorCromosoma() {
+        ordenarCromosomasPorAptitud();
+        return mejorCromosoma;
+    }
 
     public void mantenerConstanteElTamanoDeLaPoblacion() {
-        int tamanoDeLaPoblacion = tamanoDePoblacion();
-
+        ordenarCromosomasPorAptitud();
         int tamanoMaximo = getRecursos().getTamanoDeLaPoblacion();
 
-        while (tamanoDeLaPoblacion > tamanoMaximo) {
-            removerCromosoma(tamanoDeLaPoblacion - 1);
-            tamanoDeLaPoblacion--;
+        while (tamanoDePoblacion > tamanoMaximo) {
+            removerCromosoma(tamanoDePoblacion - 1);
+            tamanoDePoblacion--;
+        }
+    }
+
+    public void llenarPoblacion() {
+        Cromosoma cromosomaMuestra = getRecursos().getCromosomaDeMuestra();
+        for (int i = 0; i < tamanoDePoblacion; i++) {
+            Cromosoma copia = cromosomaMuestra.clonar();
+            Gen[] genes = copia.getGenes();
+            Gen[] nuevosGenes = new Gen[genes.length];
+            for (int j = 0; j < genes.length; j++) {
+                nuevosGenes[j] = genes[j].nuevoGen();
+                nuevosGenes[j].setAlelo(genes[j].getAlelo());
+            }
+
+            for (int j = 0; j < genes.length; j++) {
+                //Intercambio de un gen con otro
+                int pos1 = (int) (Math.random() * genes.length);
+                int pos2 = (int) (Math.random() * genes.length);
+                Gen gen = nuevosGenes[pos1];
+                nuevosGenes[pos1] = nuevosGenes[pos2];
+                nuevosGenes[pos2] = gen;
+            }
+
+            copia.setGenes(nuevosGenes);
+            agregarCromosoma(copia);
         }
     }
 }

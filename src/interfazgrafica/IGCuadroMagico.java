@@ -42,8 +42,8 @@ public class IGCuadroMagico extends JFrame {
         tamanoDeCuadroMagico = 3;
         parametrosDeAlgoritmo = new HashMap<>();
         parametrosDeAlgoritmo.put(MAP_KEY_INTERFAZ_GRAFICA, this);
-        parametrosDeAlgoritmo.put(MAP_KEY_PORCENTAJE_CRUCE, 0.4);
-        parametrosDeAlgoritmo.put(MAP_KEY_PORCENTAJE_MUTACION, 0.06);
+        parametrosDeAlgoritmo.put(MAP_KEY_PORCENTAJE_CRUCE, 0.6);
+        parametrosDeAlgoritmo.put(MAP_KEY_PORCENTAJE_MUTACION, 0.005);
         parametrosDeAlgoritmo.put(MAP_KEY_NUMERO_MAX_GENERACIONES, 100);
         parametrosDeAlgoritmo.put(MAP_KEY_NUM_CROM_POBLACION, 100);
         initComponents();
@@ -163,7 +163,7 @@ public class IGCuadroMagico extends JFrame {
 
         SpinnerNumberModel spModeloPorcentajeCruce = new SpinnerNumberModel(
                 ((Double) parametrosDeAlgoritmo.get(MAP_KEY_PORCENTAJE_CRUCE))
-                .doubleValue(), 0.20, 0.6, 0.01);
+                .doubleValue(), 0.4, 0.8, 0.01);
         final JSpinner spPorcentajeCruce = new JSpinner(
                 spModeloPorcentajeCruce);
 
@@ -172,7 +172,7 @@ public class IGCuadroMagico extends JFrame {
 
         SpinnerNumberModel spModeloPorcentajeMutacion = new SpinnerNumberModel(
                 ((Double) parametrosDeAlgoritmo.get(MAP_KEY_PORCENTAJE_MUTACION))
-                .doubleValue(), 0.03, 0.1,
+                .doubleValue(), 0.001, 0.01,
                 0.001);
         final JSpinner spPorcentajeMutacion = new JSpinner(
                 spModeloPorcentajeMutacion);
@@ -417,8 +417,23 @@ public class IGCuadroMagico extends JFrame {
         //demas
         for (int i = 0; i < puntosQueCumplen.length; i++) {
             if (puntosQueCumplen[i] != null) {
-                pMatrizColores[puntosQueCumplen[i].x][puntosQueCumplen[i].y]
-                        .setBackground(new Color(39, 123, 237));
+                if (pMatrizColores[puntosQueCumplen[i].x][puntosQueCumplen[i].y]
+                        .getBackground().equals(Color.LIGHT_GRAY)) {
+                    pMatrizColores[puntosQueCumplen[i].x][puntosQueCumplen[i].y]
+                        .setBackground(new Color(120, 140, 194));
+                } else if (pMatrizColores[puntosQueCumplen[i].x]
+                        [puntosQueCumplen[i].y]
+                        .getBackground().equals(new Color(120, 140, 194))) {
+                    pMatrizColores[puntosQueCumplen[i].x][puntosQueCumplen[i].y]
+                        .setBackground(new Color(159, 117, 198));
+                } else if (pMatrizColores[puntosQueCumplen[i].x]
+                        [puntosQueCumplen[i].y]
+                        .getBackground().equals(new Color(159, 117, 198))) {
+                    pMatrizColores[puntosQueCumplen[i].x][puntosQueCumplen[i].y]
+                        .setBackground(new Color(242, 72, 115));
+                }
+                /*pMatrizColores[puntosQueCumplen[i].x][puntosQueCumplen[i].y]
+                        .setBackground(new Color(39, 123, 237));*/
             }
         }
         this.paintAll(this.getGraphics());

@@ -8,8 +8,8 @@ package logica;
 public interface Gen {
 
     /**
-     * M&eacute;todo para crear nuevos genes con las mismas
-     * propiedades que este.
+     * M&eacute;todo para crear nuevos genes con las mismas propiedades que
+     * este.
      *
      * @return un nuevo Gen con las mismas propiedades que este.
      */
@@ -39,9 +39,4 @@ public interface Gen {
      */
     @Override
     String toString();
-
-    /**
-     * Aplica mutaci&oacute;n a este Gen.
-     */
-    void aplicarMutacion();
 }
