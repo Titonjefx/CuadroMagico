@@ -9,12 +9,12 @@ import logica.*;
  * Clase que representa el reproductor en el algoritmo gen&eacute;tico.
  * Implementa la interfaz reproductor.
  */
-public class RepreductorImpl implements Reproductor {
+public class ReproductorImpl implements Reproductor {
 
     /**
      * Constructor.
      */
-    public RepreductorImpl() {
+    public ReproductorImpl() {
     }
 
     /**
@@ -37,24 +37,24 @@ public class RepreductorImpl implements Reproductor {
         }
 
         //Pueden haber varios selectores naturales
-        int tamanoDeSelectores = recursos.tamanoDeLosSelectoresNaturales();
+        int numeroDeSelectores = recursos.tamanoDeLosSelectoresNaturales();
 
 
-        if (tamanoDeSelectores > 0) {
+        if (numeroDeSelectores > 0) {
             int tamanoDeSeleccionPorSelector;
             SelectorNatural selector;
 
             //Si hay n selectores con seleccion de m cromosomas, cada selector
             //selecciona m/n cromosomas. seleccionando al final n*(m/n)
             //cromosomas
-            for (int i = 0; i < tamanoDeSelectores; i++) {
+            for (int i = 0; i < numeroDeSelectores; i++) {
                 selector = recursos.getSelectorNatural(i);
-                if ((i == tamanoDeSelectores - 1) && (i > 0)) {
+                if ((i == numeroDeSelectores - 1) && (i > 0)) {
                     tamanoDeSeleccionPorSelector = tamanoDeSeleccion
                             - piscinaDeCromosomas.tamano();
                 } else {
                     tamanoDeSeleccionPorSelector = tamanoDeSeleccion
-                            / tamanoDeSelectores;
+                            / numeroDeSelectores;
                 }
                 selector.seleccionar(tamanoDeSeleccionPorSelector, poblacion,
                         piscinaDeCromosomas);
@@ -70,16 +70,15 @@ public class RepreductorImpl implements Reproductor {
      * @param recursos recursos a usar
      * @param piscinaDeCromosomas piscina de cromosomas de entrada
      */
-    protected List<Cromosoma> aplicarOperadoresGeneticos(Recursos recursos,
+    protected void aplicarOperadoresGeneticos(Recursos recursos,
             PiscinaDeCromosomas piscinaDeCromosomas) {
         List<Cromosoma> cromosomasResultantes = new ArrayList<>();
         List<OperadorGenetico> operadoresGeneticos = recursos.getOperadoresGeneticos();
         Iterator iteradorDeOperadores = operadoresGeneticos.iterator();
         while (iteradorDeOperadores.hasNext()) {
             OperadorGenetico operator = (OperadorGenetico) iteradorDeOperadores.next();
-            operator.operar(piscinaDeCromosomas, cromosomasResultantes);
+            operator.operar(piscinaDeCromosomas);
         }
-        return cromosomasResultantes;
     }
 
     @Override
@@ -100,7 +99,7 @@ public class RepreductorImpl implements Reproductor {
         PiscinaDeCromosomas piscinaDeCromosomas = new PiscinaDeCromosomas();
         aplicarSelectoresNaturales(recursos, poblacion, piscinaDeCromosomas);
 
-        List<Cromosoma> cromosomasResultantes = aplicarOperadoresGeneticos(recursos,
+        aplicarOperadoresGeneticos(recursos,
                 piscinaDeCromosomas);
 
         for (Cromosoma cromosoma : piscinaDeCromosomas.getCromosomas()) {
@@ -108,7 +107,7 @@ public class RepreductorImpl implements Reproductor {
             cromosoma.restablecerNumeroDeOperacionesGeneticas();
         }
 
-        for (Cromosoma cromosoma : cromosomasResultantes) {
+        for (Cromosoma cromosoma : piscinaDeCromosomas.getCromosomas()) {
             cromosoma.setHaSidoEvaluado(false);
             cromosoma.restablecerEdad();
             cromosoma.incrementarNumeroDeOperacionesGeneticas();

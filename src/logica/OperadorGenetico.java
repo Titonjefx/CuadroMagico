@@ -1,6 +1,5 @@
 package logica;
 
-import java.util.List;
 import logica_implementacion.PiscinaDeCromosomas;
 
 /**
@@ -14,9 +13,6 @@ public interface OperadorGenetico {
      *
      * @param piscinaDeCromosomas cromosomas a los que se les aplicar&aacute; los
      * operadores gen&eacute;ticos
-     * @param cromosomasCandidatos cromosomas elegidos para pasar a la siguiente
-     * generaci&oacute;n
      */
-    public void operar(final PiscinaDeCromosomas piscinaDeCromosomas,
-            final List cromosomasCandidatos);
+    public void operar(final PiscinaDeCromosomas piscinaDeCromosomas);
 }

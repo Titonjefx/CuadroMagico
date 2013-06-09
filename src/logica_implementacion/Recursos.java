@@ -34,11 +34,11 @@ public class Recursos {
     /**
      * Referencia la piscina de cromosomas.
      */
-    private transient PiscinaDeCromosomas piscinaDeCromosomas;
+    private PiscinaDeCromosomas piscinaDeCromosomas;
     /**
      * Almacena todas las implementaciones de operadores gen&eacute;ticos.
      */
-    private List operadoresGeneticos;
+    private List<OperadorGenetico> operadoresGeneticos;
     /**
      * N&uacute;mero de genes en cada cromosoma.
      */
@@ -46,17 +46,11 @@ public class Recursos {
     /**
      * Selectores gen&eacute;ticos.
      */
-    private List selectores;
+    private List<SelectorNatural> selectores;
     /**
      * Indica que tantas evoluciones han ocurrido.
      */
     private int numeroDeGeneracionesActuales;
-    /**
-     * True: El tama&ntilde;o de la poblaci&oacute;n ser&aacute; constante.
-     * False: El tama&ntilde;o de la poblaci&oacute;n depender&aacute; de los
-     * operadores gen&eacute;ticos y los selectores naturales. TRUE por defecto.
-     */
-    private boolean mantenerConstanteElTamanoDePoblacion;
     /**
      * Tama&ntilde;o de la poblaci&oacute;n.
      */
@@ -82,7 +76,6 @@ public class Recursos {
     public Recursos() {
         selectores = new ArrayList();
         operadoresGeneticos = new ArrayList();
-        mantenerConstanteElTamanoDePoblacion = true;
         tamanoDeLaPoblacion = 100;
     }
 
@@ -136,10 +129,9 @@ public class Recursos {
      *
      * @param selectorNatural a agregar
      */
-    public void setSelectorNatural(final SelectorNatural selectorNatural) {
-        agregarSelectorNatural(selectorNatural);
-    }
-
+//    public void setSelectorNatural(final SelectorNatural selectorNatural) {
+//        agregarSelectorNatural(selectorNatural);
+//    }
     /**
      * Regresa un selector natural en la posici&oacute;n indicada por indice.
      *
@@ -273,27 +265,6 @@ public class Recursos {
      */
     public int getNumeroDeGeneracionesActuales() {
         return numeroDeGeneracionesActuales;
-    }
-
-    /**
-     * Regresa true si el tama&ntilde;o de la poblaci&oacute;n es constante.
-     * false de lo contrario.
-     *
-     * @return true si el tama&ntilde;o de la poblaci&oacute;n es constante
-     */
-    public boolean esConstanteElTamanoDePoblacion() {
-        return mantenerConstanteElTamanoDePoblacion;
-    }
-
-    /**
-     * Establece si el tama&ntilde;o de la poblaci&oacute;n es constante o no.
-     *
-     * @param mantenerConstanteElTamanoDePoblacion true si el tama&ntilde;o de
-     * la poblaci&oacute;n ser&aacute; constante
-     */
-    public void setEsConstanteElTamanoDePoblacion(
-            boolean mantenerConstanteElTamanoDePoblacion) {
-        this.mantenerConstanteElTamanoDePoblacion = mantenerConstanteElTamanoDePoblacion;
     }
 
     /**

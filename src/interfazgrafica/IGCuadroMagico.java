@@ -44,10 +44,9 @@ public class IGCuadroMagico extends JFrame {
     }
 
     private void establecerParametrosPorDefecto() {
-        tamanoDeCuadroMagico = 3;
-
         if (parametrosDeAlgoritmo == null) {
             parametrosDeAlgoritmo = new HashMap<>();
+            tamanoDeCuadroMagico = 3;
         } else {
             parametrosDeAlgoritmo.clear();
         }
@@ -178,7 +177,7 @@ public class IGCuadroMagico extends JFrame {
 
         SpinnerNumberModel spModeloPorcentajeCruce = new SpinnerNumberModel(
                 ((Double) parametrosDeAlgoritmo.get(MAP_KEY_PORCENTAJE_CRUCE))
-                .doubleValue(), 0.4, 0.8, 0.01);
+                .doubleValue(), 0.2, 0.6, 0.01);
         final JSpinner spPorcentajeCruce = new JSpinner(
                 spModeloPorcentajeCruce);
 
@@ -187,7 +186,7 @@ public class IGCuadroMagico extends JFrame {
 
         SpinnerNumberModel spModeloPorcentajeMutacion = new SpinnerNumberModel(
                 ((Double) parametrosDeAlgoritmo.get(MAP_KEY_PORCENTAJE_MUTACION))
-                .doubleValue(), 0.001, 0.01,
+                .doubleValue(), 0.001, 0.05,
                 0.001);
         final JSpinner spPorcentajeMutacion = new JSpinner(
                 spModeloPorcentajeMutacion);
@@ -197,7 +196,7 @@ public class IGCuadroMagico extends JFrame {
 
         SpinnerNumberModel spModeloNumMaxGeneraciones = new SpinnerNumberModel(
                 ((Integer) parametrosDeAlgoritmo.get(
-                MAP_KEY_NUMERO_MAX_GENERACIONES)).intValue(), 100, 10000,
+                MAP_KEY_NUMERO_MAX_GENERACIONES)).intValue(), 20, 1000,
                 10);
         final JSpinner spNumMaxGeneraciones = new JSpinner(
                 spModeloNumMaxGeneraciones);
@@ -207,7 +206,7 @@ public class IGCuadroMagico extends JFrame {
 
         SpinnerNumberModel spModeloNumCromPoblacion = new SpinnerNumberModel(
                 ((Integer) parametrosDeAlgoritmo.get(
-                MAP_KEY_NUM_CROM_POBLACION)).intValue(), 100, 500,
+                MAP_KEY_NUM_CROM_POBLACION)).intValue(), 50, 150,
                 1);
         final JSpinner spNumCromPoblacion = new JSpinner(
                 spModeloNumCromPoblacion);

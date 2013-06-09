@@ -9,7 +9,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import logica.Cromosoma;
+import logica.FuncionDeAptitud;
+import logica.FuncionDeEvaluacion;
 import logica.Gen;
+import logica.OperadorGenetico;
+import logica.Reproductor;
+import logica.SelectorNatural;
 import static utilidades.MapKeyConstantes.*;
 
 /**
@@ -37,7 +42,9 @@ public class AlgoritmoGenetico {
             Map<String, Object> parametros) {
         this.parametros = parametros;
 
-        //Imprimimos los parametros del algoritmo -- (Borrar)
+        /**
+         * TODO. Imprimimos los parametros del algoritmo -- (Borrar)
+         */
         System.err.println("Porcentaje de cruce: "
                 + parametros.get(MAP_KEY_PORCENTAJE_CRUCE));
         System.err.println("Porcentaje de mutacion: "
@@ -52,15 +59,20 @@ public class AlgoritmoGenetico {
         System.err.println("Tamano del Cuadrado Magico: "
                 + ((IGCuadroMagico) parametros.get(MAP_KEY_INTERFAZ_GRAFICA))
                 .getTamanoDeCuadroMagico());
-        // -- (Borrar)
+        /**
+         * -- (Borrar)
+         */
     }
 
     /**
      * Aplicaci&oacute;n del algoritmo gen&eacute;tico.
      */
     public void aplicarAlgoritmo() {
+
         //Algoritmo
 
+        //Se crean las variables con valores a partir de los parametros
+        //recibidos para el algoritmo genetico.
         double porcentajeDeCruce = (double) parametros.get(
                 MAP_KEY_PORCENTAJE_CRUCE);
         double porcentajeDeMutacion = (double) parametros.get(
@@ -73,54 +85,150 @@ public class AlgoritmoGenetico {
                 MAP_KEY_ALGORITMO_COMBINATORIO);
         int tamanoCuadroMagico = ((IGCuadroMagico) parametros.get(
                 MAP_KEY_INTERFAZ_GRAFICA)).getTamanoDeCuadroMagico();
-        int numeroDeGenesPorCromosoma = tamanoCuadroMagico*tamanoCuadroMagico;
+        int numeroDeGenesPorCromosoma = tamanoCuadroMagico * tamanoCuadroMagico;
 
-        Cromosoma cromosomaInicial = new CromosomaImpl(numeroDeGenesPorCromosoma);
+        //Cromosoma a partir del cual se crearan los demas cromosomas de la
+        //poblacion.
+        Cromosoma cromosomaInicial = new CromosomaImpl(
+                numeroDeGenesPorCromosoma);
+
+        //Se crea una lista de numeros desde 1 hasta numeroDeGenesPorCromosoma
         List numerosAleatorios = new ArrayList();
-
         for (int i = 1; i <= numeroDeGenesPorCromosoma; i++) {
             numerosAleatorios.add(i);
         }
 
+        //Se ordena esta lista aleatoriamente. permutacion aleatoria.
         Collections.shuffle(numerosAleatorios);
 
+        //Se crea cada gen a partir de los valores de esta lista y se agrega
+        //al cromosomaInicial.
         for (int i = 0; i < numeroDeGenesPorCromosoma; i++) {
             Gen genEntero = new GenEntero(1, numeroDeGenesPorCromosoma);
             genEntero.setAlelo((int) numerosAleatorios.get(i));
+            cromosomaInicial.setGen(i, genEntero);
         }
 
+        //Clase donde se almacenaran los recursos necesarios para que el
+        //algoritmo genetico funcione.
         Recursos recursosDeAlgoritmoGenetico = new Recursos();
 
+        //Se establece el tamano de la poblacion del algoritmo genetico.
         recursosDeAlgoritmoGenetico.setTamanoDeLaPoblacion(numCromPoblacion);
+
+        //Se establece el porcentaje de mutacion del algoritmo genetico.
         recursosDeAlgoritmoGenetico.setPorcentajeDeMutacion(
                 porcentajeDeMutacion);
+
+        //Se establece el porcentaje de cruce del algoritmo genetico.
         recursosDeAlgoritmoGenetico.setPorcentajeDeCruce(porcentajeDeCruce);
 
-        recursosDeAlgoritmoGenetico.setNumeroDeCromosomasAReproducir((int) (numCromPoblacion / 2));
+        //Se establece el numero de cromosomas que seran seleccionados para la
+        //reproduccion.
+        recursosDeAlgoritmoGenetico.setNumeroDeCromosomasAReproducir(
+                (int) porcentajeDeCruce * numCromPoblacion);
 
-        recursosDeAlgoritmoGenetico.setSelectorNatural(null);
-        recursosDeAlgoritmoGenetico.setReproductor(null);
-        recursosDeAlgoritmoGenetico.setPiscinaDeCromosomas(null);
-        recursosDeAlgoritmoGenetico.setFuncionDeEvaluacion(null);
-        recursosDeAlgoritmoGenetico.setFuncionDeAptitud(null);
-        recursosDeAlgoritmoGenetico.setCromosomaDeMuestra(null);
+        //Se establece un cromosoma a partir del cual se crearan los demas
+        //cromosomas de la poblacion. Contiene genes cuyos alelos son numeros
+        //aleatorios desde 1 hasta numeroDeGenesPorCromosoma; Cada gen con un
+        //alelo diferente a los demas.
+        recursosDeAlgoritmoGenetico.setCromosomaDeMuestra(cromosomaInicial);
 
-        //esta propiedad sera borrada, para que el tamano de la poblacion sea
-        //constante siempre en este algoritmo
-        recursosDeAlgoritmoGenetico.setEsConstanteElTamanoDePoblacion(true);
+        //Se agrega el selector natural usado para seleccionar los cromosomas
+        //que se reproduciran.
+        SelectorNatural selectorNatural = new Selector(
+                recursosDeAlgoritmoGenetico);
+        recursosDeAlgoritmoGenetico.agregarSelectorNatural(selectorNatural);
+
+        //Se establece la clase encargada de la reproduccion y en general del
+        //la logica de un algoritmo genetico.
+        Reproductor reproductor = new ReproductorImpl();
+        recursosDeAlgoritmoGenetico.setReproductor(reproductor);
+
+        //Se establece la clase deonde se guardaran los cromosomas elegidos para
+        //la reproduccion
+        recursosDeAlgoritmoGenetico.setPiscinaDeCromosomas(
+                new PiscinaDeCromosomas());
+
+        //Se establece la funcion de evaluacion usada para saber que cromosoma
+        //es mejor que otro dependiendo de su aptitud.
+        FuncionDeEvaluacion funcionDeEvaluacion = new FuncionDeEvaluacionImpl();
+        recursosDeAlgoritmoGenetico.setFuncionDeEvaluacion(funcionDeEvaluacion);
+
+        FuncionDeAptitud funcionDeAptitud;
+        OperadorGenetico operadorDeCruce;
+        OperadorGenetico operadorDeMutacion;
+
+        if (esAlgCombinatorio) {
+            //Si el algoritmo es combinatorio, entonces la solucion dependera de
+            //las permutaciones realizadas en un cromosoma entre sus genes.
+
+            funcionDeAptitud = new FuncionDeAptitudCombinatoria();
+            operadorDeCruce = new OperadorDeCruceCombinatorio();
+            operadorDeMutacion = new OperadorDeMutacionCombinatorio();
+        } else {
+            //Si el algoritmo es ingenuo (no combinatorio), entonces la solucion
+            //dependera de los cambios realizados a cada uno de los genes de un
+            //cromosoma (sin permutarlos).
+
+            funcionDeAptitud = new FuncionDeAptitudIngenua();
+            operadorDeCruce = new OperadorDeCruceIngenuo();
+            operadorDeMutacion = new OperadorDeMutacionIngenuo();
+        }
+
+        //Se establece la funcion de aptitud que calcula la aptitud de cada
+        //cromosoma.
+        recursosDeAlgoritmoGenetico.setFuncionDeAptitud(funcionDeAptitud);
+
+        //Se agregan los operadores geneticos de mutacion y de cruce.
+        recursosDeAlgoritmoGenetico.agregarOperadorGenetico(operadorDeCruce);
+        recursosDeAlgoritmoGenetico.agregarOperadorGenetico(operadorDeMutacion);
+
+
 
         //...
 
-        int matrizCuadroMagico[][] = new int[3][3];
-        matrizCuadroMagico[0][0] = 1;
-        matrizCuadroMagico[1][1] = 5;
-        matrizCuadroMagico[2][2] = 9;
+        //FIN Algoritmo
 
+        Cromosoma cromCandtSol;
+
+        /**
+         * TODO.
+         *
+         * BORRAR (Solucion simulada para pruebas).
+         */
+        int sol[] = {1, 2, 3, 2, 2, 2, 3, 2, 1};
+
+        cromCandtSol = new CromosomaImpl(numeroDeGenesPorCromosoma);
+        for (int i = 0; i < numeroDeGenesPorCromosoma; i++) {
+            Gen genEntero = new GenEntero(1, numeroDeGenesPorCromosoma);
+            genEntero.setAlelo(sol[i]);
+            cromCandtSol.setGen(i, genEntero);
+        }
+        /**
+         * FIN BORRAR
+         */
+        int matrizPosibleSolucionCuadroMagico[][] =
+                new int[tamanoCuadroMagico][tamanoCuadroMagico];
+
+        //Se representan los alelos del cromosoma candidato a ser solucion
+        //del cuadro magico en una matriz.
+        for (int pos = 0; pos < numeroDeGenesPorCromosoma; pos++) {
+            int i = (int) Math.floor(pos / tamanoCuadroMagico);
+            int j = pos % tamanoCuadroMagico;
+            matrizPosibleSolucionCuadroMagico[i][j] = (int) cromCandtSol
+                    .getGen(pos).getAlelo();
+        }
+
+        //Objeto donde se envian los resultados del algoritmo mediante un mapeo.
         Map<String, Object> resultados = new HashMap<>();
 
-        resultados.put(MAP_KEY_MATRIZ_CUADRO_MAGICO, matrizCuadroMagico);
-        Point[] puntosS = obtenerPuntosQueCoinciden(new int[]{1, 2, 3, 2, 8, 2, 3, 2, 1});
-        resultados.put(MAP_KEY_LINEAS_QUE_CUMPLEN, puntosS);
+        resultados.put(MAP_KEY_MATRIZ_CUADRO_MAGICO,
+                matrizPosibleSolucionCuadroMagico);
+
+        Point[] puntosQueCumplenConSuma = obtenerPuntosQueCoinciden(
+                cromCandtSol);
+        resultados.put(MAP_KEY_LINEAS_QUE_CUMPLEN, puntosQueCumplenConSuma);
 
         ((IGCuadroMagico) parametros.get(MAP_KEY_INTERFAZ_GRAFICA))
                 .mostrarResultadosDeAlgoritmoGenetico(resultados);
@@ -136,40 +244,14 @@ public class AlgoritmoGenetico {
      * @param cromosoma cromosoma que representa una soluci&oacute;n
      * @return puntos que cumplen
      */
-    public Point[] obtenerPuntosQueCoinciden(int[] cromosoma) {//Cromosoma cromosoma) {
+    public Point[] obtenerPuntosQueCoinciden(Cromosoma cromosoma) {
         List<Point> puntos = new ArrayList();
 
         Map<Integer, List> sumas;
         sumas = new HashMap<>();
 
-        int tamanoDeCuadrado = (int) Math.sqrt(cromosoma.length);
-        /*int tamanoDeCuadrado = (int) Math.sqrt(cromosoma.tamano());
-         Gen[] genes = cromosoma.getGenes();
-
-         List sumasPorLista = new ArrayList((numeroDeGenes * 2) + 2);
-         for (int i = 0; i < numeroDeGenes; i++) {
-         for (int j = 0; j < numeroDeGenes; j++) {
-         int pos = (i - 1) * numeroDeGenes + j;
-         if (i == j) {
-         sumasPorLista[(2 * tamanoDeCuadrado)] =
-         (sumasPorLista[(2 * tamanoDeCuadrado)]
-         + ((Integer) genes[pos].getAlelo())
-         .intValue());
-         }
-         if (i == ((numeroDeGenes - 1) - j)) {
-         sumasPorLista[(2 * tamanoDeCuadrado) + 1] =
-         (sumasPorLista[(2 * tamanoDeCuadrado)
-         + 1] + ((Integer) genes[pos].getAlelo())
-         .intValue());
-         }
-         sumasPorLista[i] = (sumasPorLista[i] + ((Integer) genes[pos]
-         .getAlelo()).intValue());
-
-         sumasPorLista[tamanoDeCuadrado + j] =
-         (sumasPorLista[tamanoDeCuadrado + j] + ((Integer)
-         genes[pos].getAlelo()).intValue()));
-         }
-         }*/
+        int tamanoDeCuadrado = (int) Math.sqrt(cromosoma.tamano());
+        Gen[] genes = cromosoma.getGenes();
 
         int sumasPorLista[] = new int[((tamanoDeCuadrado * 2) + 2)];
 
@@ -179,17 +261,21 @@ public class AlgoritmoGenetico {
                 if (i == j) {
                     sumasPorLista[(2 * tamanoDeCuadrado)] =
                             (sumasPorLista[(2 * tamanoDeCuadrado)]
-                            + cromosoma[pos]);
+                            + ((Integer) genes[pos].getAlelo())
+                            .intValue());
                 }
                 if (i == ((tamanoDeCuadrado - 1) - j)) {
                     sumasPorLista[(2 * tamanoDeCuadrado) + 1] =
                             (sumasPorLista[(2 * tamanoDeCuadrado)
-                            + 1] + cromosoma[pos]);
+                            + 1] + ((Integer) genes[pos].getAlelo())
+                            .intValue());
                 }
-                sumasPorLista[i] = (sumasPorLista[i] + cromosoma[pos]);
+                sumasPorLista[i] = (sumasPorLista[i] + ((Integer) genes[pos]
+                        .getAlelo()).intValue());
 
                 sumasPorLista[tamanoDeCuadrado + j] =
-                        (sumasPorLista[tamanoDeCuadrado + j] + cromosoma[pos]);
+                        (sumasPorLista[tamanoDeCuadrado + j]
+                        + ((Integer) genes[pos].getAlelo()).intValue());
             }
         }
 
@@ -203,34 +289,44 @@ public class AlgoritmoGenetico {
             }
         }
 
-        int numeroMayorDeListas = 0;
-        int sumaConNumeroMayorDeListas = 0;
+        int numeroMayorDeElementos = 0;
+        int sumaConNumeroMayorDeElementos = 0;
 
         for (Entry<Integer, List> entrada : sumas.entrySet()) {
-            if (entrada.getValue().size() > numeroMayorDeListas) {
-                numeroMayorDeListas = entrada.getValue().size();
-                sumaConNumeroMayorDeListas = entrada.getKey();
+            if (entrada.getValue().size() > numeroMayorDeElementos) {
+                numeroMayorDeElementos = entrada.getValue().size();
+                sumaConNumeroMayorDeElementos = entrada.getKey();
             }
         }
 
-        List<Integer> listasQueCumplen = sumas.get(sumaConNumeroMayorDeListas);
+        List<Integer> listasQueCumplen = sumas.get(
+                sumaConNumeroMayorDeElementos);
 
         for (Integer listaQueCumple : listasQueCumplen) {
             int idListaQueCumple = listaQueCumple.intValue();
+
             if (idListaQueCumple < tamanoDeCuadrado) {
+                //Si la suma corresponde a alguna fila
+
                 for (int i = 0; i < tamanoDeCuadrado; i++) {
                     puntos.add(new Point(idListaQueCumple, i));
                 }
             } else if (idListaQueCumple < (tamanoDeCuadrado * 2)) {
+                //Si la suma corresponde a alguna columna
+
                 for (int i = 0; i < tamanoDeCuadrado; i++) {
                     puntos.add(new Point(i, idListaQueCumple
                             - tamanoDeCuadrado));
                 }
             } else if (idListaQueCumple == (tamanoDeCuadrado * 2)) {
+                //Si la suma corresponde a la diagonal noroeste-sureste
+
                 for (int i = 0; i < tamanoDeCuadrado; i++) {
                     puntos.add(new Point(i, i));
                 }
             } else if (idListaQueCumple == ((tamanoDeCuadrado * 2) + 1)) {
+                //Si la suma corresponde a la diagonal suroeste-noreste
+
                 for (int i = 0; i < tamanoDeCuadrado; i++) {
                     puntos.add(new Point(i, (tamanoDeCuadrado - 1) - i));
                 }

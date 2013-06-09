@@ -31,13 +31,13 @@ public class GenEntero implements Gen {
     /**
      * Construye un nuevo gen con los limites especificados.
      *
-     * @param unLimiteInferior l&iacute;mite inferior del gen
-     * @param unLimiteSuperior l&iacute;mite superior del gen
+     * @param limiteInferior l&iacute;mite inferior del gen
+     * @param limiteSuperior l&iacute;mite superior del gen
      */
-    public GenEntero(final int unLimiteInferior,
-            final int unLimiteSuperior) {
-        limiteInferior = unLimiteInferior;
-        limiteSuperior = unLimiteSuperior;
+    public GenEntero(final int limiteInferior,
+            final int limiteSuperior) {
+        this.limiteInferior = limiteInferior;
+        this.limiteSuperior = limiteSuperior;
     }
 
     /**
@@ -65,10 +65,9 @@ public class GenEntero implements Gen {
      */
     @Override
     public void setAValorAleatorio() {
-        double valorAleatorio = ((long) limiteSuperior - (long) limiteInferior)
-                * Math.random()
-                + limiteInferior;
-        setAlelo(new Integer((int) Math.round(valorAleatorio)));
+        int valorAleatorio = (int)(((int) (1 + limiteSuperior) - 
+                (int) limiteInferior) * Math.random() + limiteInferior);
+        setAlelo(new Integer(valorAleatorio));
     }
 
     /**

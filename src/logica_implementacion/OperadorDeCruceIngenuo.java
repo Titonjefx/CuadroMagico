@@ -1,10 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package logica_implementacion;
 
-import java.util.List;
+import logica.Cromosoma;
+import logica.Gen;
 import logica.OperadorGenetico;
 
 /**
@@ -13,9 +10,38 @@ import logica.OperadorGenetico;
  */
 public class OperadorDeCruceIngenuo implements OperadorGenetico {
 
+    /**
+     * Cruza los cromosomas en la piscina de cromosomas dejando en esta solo los
+     * descendientes de dicho cruce. Vea la interface OperadorGenetico para esta
+     * descripci&oacute;n.
+     */
     @Override
-    public void operar(PiscinaDeCromosomas piscinaDeCromosomas, List cromosomasCandidatos) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void operar(PiscinaDeCromosomas piscinaDeCromosomas) {
+        int numeroDeCruces = piscinaDeCromosomas.tamano();
+        for (int i = 0; i < numeroDeCruces; i++) {
+            int posPadre = (int) (Math.random() * numeroDeCruces);
+            int posMadre = posPadre;
+            while (posMadre == posPadre) {
+                posMadre = (int) (Math.random() * numeroDeCruces);
+            }
+            Cromosoma cromosomasPadre = piscinaDeCromosomas.getCromosoma(
+                    posPadre);
+            Cromosoma cromosomasMadre = piscinaDeCromosomas.getCromosoma(
+                    posMadre);
+            cruzar(cromosomasPadre, cromosomasMadre);
+        }
     }
-    
+
+    private void cruzar(Cromosoma cromosomasPadre, Cromosoma cromosomasMadre) {
+        Gen genesPadre[] = cromosomasPadre.getGenes();
+        Gen genesMadre[] = cromosomasMadre.getGenes();
+        int posAleatoria = (int) (Math.random() * (genesPadre.length - 2)) + 1;
+        for (int i = 0; i < genesPadre.length; i++) {
+            if (i <= posAleatoria) {
+                Gen genTemporal = genesPadre[i];
+                genesPadre[i] = genesMadre[i];
+                genesMadre[i] = genTemporal;
+            }
+        }
+    }
 }

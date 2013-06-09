@@ -46,7 +46,7 @@ public class PiscinaDeCromosomas {
     public void agregarCromosoma(final Cromosoma cromosoma) {
         piscinaDeCromosomas.add(cromosoma);
     }
-    
+
     /**
      * Agrega multiples cromosomas a la piscina de cromosomas.
      *
@@ -55,7 +55,7 @@ public class PiscinaDeCromosomas {
     public void agregarCromosomas(final List<Cromosoma> cromosomas) {
         piscinaDeCromosomas.addAll(cromosomas);
     }
-    
+
     /**
      * Regresa el n&uacute;mero de cromosomas en la piscina de cromosomas.
      *
@@ -64,8 +64,12 @@ public class PiscinaDeCromosomas {
     public int tamano() {
         return piscinaDeCromosomas.size();
     }
-    
+
     public List<Cromosoma> getCromosomas() {
         return piscinaDeCromosomas;
+    }
+
+    public Cromosoma getCromosoma(int pos) {
+        return this.piscinaDeCromosomas.get(pos);
     }
 }

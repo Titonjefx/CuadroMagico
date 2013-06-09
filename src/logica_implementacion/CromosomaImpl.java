@@ -126,11 +126,9 @@ public class CromosomaImpl implements Cromosoma {
     }
 
     /**
-     * Establece un nuevo gen en la posicion indicada.
-     *
-     * @param indice que indica la posici&oacute;n del gen a ser reemplazado
-     * @param gen que se establecer&aacute; en la posici&oacute;n index
+     * Vea la interface de Cromosoma para esta descripci&oacute;n.
      */
+    @Override
     public void setGen(int indice, Gen gen) {
         genes[indice] = gen;
     }

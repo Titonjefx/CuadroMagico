@@ -17,13 +17,25 @@ public class OperadorDeMutacionCombinatorio implements OperadorGenetico {
     private Recursos recursos;
 
     /**
-     * Operador que intercambia un gen con otro en determinado cromosoma.
+     * Operador que intercambia un gen con otro en determinado cromosoma. Supone
+     * que el operador de cruce ha sido usado, por lo que los cromosomas
+     * candidatos contienen los cromosomas descendientes del cruce.
      *
      * @param piscinaDeCromosomas
      */
     @Override
-    public void operar(PiscinaDeCromosomas piscinaDeCromosomas,
-            final List cromosomasCandidatos) {
+    public void operar(PiscinaDeCromosomas piscinaDeCromosomas) {
+
+        if (piscinaDeCromosomas.tamano() < 1) {
+            //No se ha empleado el operador de cruce.
+
+            /**
+             * TODO. Borrar la impresion de linea.
+             */
+            System.out.println("No se ha aplicado el operador de cruce");
+            return;
+        }
+
         double porcentajeDeMutacion = recursos.getPorcentajeDeMutacion();
         int numeroDeCromosomas = piscinaDeCromosomas.tamano();
         int numeroDeGenesPorCromosoma = 0;
@@ -38,9 +50,10 @@ public class OperadorDeMutacionCombinatorio implements OperadorGenetico {
 
             int posicionCromosomaAleatorio = (int) (Math.random()
                     * numeroDeCromosomas);
-            Cromosoma nuevoCromosoma = ((Cromosoma) cromosomas
-                    .get(posicionCromosomaAleatorio)).clonar();
-            Gen[] genes = nuevoCromosoma.getGenes();
+            /*Cromosoma nuevoCromosoma = ((Cromosoma) cromosomas
+                    .get(posicionCromosomaAleatorio)).clonar();*/
+            Gen[] genes = ((Cromosoma) cromosomas
+                    .get(posicionCromosomaAleatorio)).getGenes();
 
             //Intercambio de un gen con otro
             int pos1 = (int) (Math.random() * numeroDeGenesPorCromosoma);
@@ -48,7 +61,8 @@ public class OperadorDeMutacionCombinatorio implements OperadorGenetico {
             Gen gen = genes[pos1];
             genes[pos1] = genes[pos2];
             genes[pos2] = gen;
-            cromosomasCandidatos.add(nuevoCromosoma);
+            
+            //cromosomasCandidatos.add(nuevoCromosoma);
         }
     }
 

@@ -22,12 +22,24 @@ public class OperadorDeMutacionIngenuo implements OperadorGenetico {
 
     /**
      * TODO. Vea la interface de OperadorGenetico para esta descripci&oacute;n.
+     * Supone que el operador de cruce ha sido usado, por lo que los cromosomas
+     * candidatos contienen los cromosomas descendientes del cruce.
      *
      * @param piscinaDeCromosomas
      */
     @Override
-    public void operar(PiscinaDeCromosomas piscinaDeCromosomas,
-            final List cromosomasCandidatos) {
+    public void operar(PiscinaDeCromosomas piscinaDeCromosomas) {
+
+        if (piscinaDeCromosomas.tamano() < 1) {
+            //No se ha empleado el operador de cruce.
+
+            /**
+             * TODO. Borrar la impresion de linea.
+             */
+            System.out.println("No se ha aplicado el operador de cruce");
+            return;
+        }
+
         double porcentajeDeMutacion = recursos.getPorcentajeDeMutacion();
         int numeroDeCromosomas = piscinaDeCromosomas.tamano();
         int numeroDeGenesPorCromosoma = 0;
@@ -43,13 +55,14 @@ public class OperadorDeMutacionIngenuo implements OperadorGenetico {
                     * numeroDeCromosomas);
             int posicionGenAleatorio = (int) (Math.random()
                     * numeroDeGenesPorCromosoma);
-            Cromosoma nuevoCromosoma = ((Cromosoma) cromosomas
-                    .get(posicionCromosomaAleatorio)).clonar();
-            Gen genes[] = nuevoCromosoma.getGenes();
+            /*Cromosoma nuevoCromosoma = ((Cromosoma) cromosomas
+                    .get(posicionCromosomaAleatorio)).clonar();*/
+            Gen genes[] = ((Cromosoma) cromosomas
+                    .get(posicionCromosomaAleatorio)).getGenes();
 
             genes[posicionGenAleatorio].setAValorAleatorio();
 
-            cromosomasCandidatos.add(nuevoCromosoma);
+            //cromosomasCandidatos.add(nuevoCromosoma);
         }
     }
 

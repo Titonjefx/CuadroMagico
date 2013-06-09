@@ -37,7 +37,8 @@ public class Selector extends SelectorNatural {
     }
 
     /**
-     * Los cromosomas con mejor aptitud pasaran.
+     * Los cromosomas con mejor aptitud pasaran. Vea la interfaz SelectorNatural
+     * para esta descripci&oacute;n.
      */
     @Override
     public void seleccionar(final int numeroDeSeleccionados,
@@ -51,7 +52,7 @@ public class Selector extends SelectorNatural {
         }
         int puedenSerElegidos;
         int numeroDeCromosomas = cromosomas.tamanoDePoblacion();
-        
+
         if (numeroDeSeleccionados > numeroDeCromosomas) {
             puedenSerElegidos = numeroDeCromosomas;
         } else {

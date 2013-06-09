@@ -29,6 +29,14 @@ public interface Cromosoma {
     void setGenes(Gen[] genes);
 
     /**
+     * Establece el gen en determinada posici&oacute;n.
+     *
+     * @param posicion se establece el gen en esta posicion
+     * @param gen gen a establecer
+     */
+    void setGen(int indice, Gen gen);
+
+    /**
      * N&uacute;mero de Genes que contiene este cromosoma.
      *
      * @return tamano de este cromosoma (n&uacute;mero de genes)
@@ -118,7 +126,7 @@ public interface Cromosoma {
      * Establece si este cromosoma ha sido evaluado.
      */
     void setHaSidoEvaluado(boolean haSidoEvaluado);
-    
+
     /**
      * Crea un nuevo cromosoma con las mismas propiedades que este.
      */
