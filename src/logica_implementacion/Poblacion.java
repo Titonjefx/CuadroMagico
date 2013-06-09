@@ -11,8 +11,6 @@ import logica.Gen;
 
 /**
  * Clase donde estar&aacute;n almacenados todos los cromosomas.
- *
- * @author Jhonderson
  */
 public class Poblacion {
 

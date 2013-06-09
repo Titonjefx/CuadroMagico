@@ -8,8 +8,6 @@ import logica.SelectorNatural;
 /**
  * Clase que representa un selector natural en el algoritmo gen&eacute;tico.
  * Extiede de la clase abstracta SelectorNatural.
- *
- * @author Jhonderson
  */
 public class Selector extends SelectorNatural {
 

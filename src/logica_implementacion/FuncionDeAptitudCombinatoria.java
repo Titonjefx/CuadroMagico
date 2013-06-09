@@ -7,8 +7,9 @@ import logica.FuncionDeAptitud;
 import logica.Gen;
 
 /**
- *
- * @author jhonacd
+ * Funcion que calcula el valor de aptitud en un cromosoma. Tiene en cuenta que
+ * la soluci&oacute;n depende de la posici&oacute;n de los genes en el
+ * cromosoma.
  */
 public class FuncionDeAptitudCombinatoria extends FuncionDeAptitud {
 

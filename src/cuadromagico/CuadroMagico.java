@@ -4,8 +4,6 @@ import interfazgrafica.IGCuadroMagico;
 
 /**
  * Clase principal donde se hace el llamado a la interfaz gr&aacute;fica.
- *
- * @author Jhonderson
  */
 public class CuadroMagico {
 

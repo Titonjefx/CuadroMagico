@@ -4,11 +4,14 @@ package utilidades;
  * Clase donde estan las constantes usadas para definir las llaves asociadas a
  * los valores de los par&aacute;metros del algoritmo gen&eacute;tico, sus
  * recursos y sus resultados.
- *
- * @author Jhonderson
  */
 public class MapKeyConstantes {
 
+    /**
+     * Constructor de la clase. Se establece privado para que no se creen
+     * instancias de esta clase; solo debe ser usada para acceder a las
+     * variables est&aacute;ticas que aqu&iacute; se definen.
+     */
     private MapKeyConstantes() {
     }
     public static final String MAP_KEY_INTERFAZ_GRAFICA = "interfazGrafica";
@@ -21,4 +24,6 @@ public class MapKeyConstantes {
             "numMaxGeneraciones";
     public static final String MAP_KEY_LINEAS_QUE_CUMPLEN = "lineasQueCumplen";
     public static final String MAP_KEY_NUM_CROM_POBLACION = "numCromPoblacion";
+    public static final String MAP_KEY_ALGORITMO_COMBINATORIO =
+            "algCombinatorio";
 }

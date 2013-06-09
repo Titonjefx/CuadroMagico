@@ -10,8 +10,8 @@ import logica.Gen;
 import logica.OperadorGenetico;
 
 /**
- *
- * @author jhonacd
+ * Operador de mutación del algoritmo genético. Tiene en cuenta que la
+ * soluci&oacute;n depende de cada valor de los genes en el cromosoma.
  */
 public class OperadorDeMutacionIngenuo implements OperadorGenetico {
 
@@ -35,8 +35,8 @@ public class OperadorDeMutacionIngenuo implements OperadorGenetico {
             numeroDeGenesPorCromosoma = ((Cromosoma) piscinaDeCromosomas.getCromosomas()
                     .get(0)).tamano();
         }
-        int numeroDeGenesAMutar = (int) porcentajeDeMutacion *
-                numeroDeCromosomas * numeroDeGenesPorCromosoma;
+        int numeroDeGenesAMutar = (int) porcentajeDeMutacion
+                * numeroDeCromosomas * numeroDeGenesPorCromosoma;
         List cromosomas = piscinaDeCromosomas.getCromosomas();
         for (int i = 0; i < numeroDeGenesAMutar; i++) {
             int posicionCromosomaAleatorio = (int) (Math.random()
@@ -48,7 +48,7 @@ public class OperadorDeMutacionIngenuo implements OperadorGenetico {
             Gen genes[] = nuevoCromosoma.getGenes();
 
             genes[posicionGenAleatorio].setAValorAleatorio();
-            
+
             cromosomasCandidatos.add(nuevoCromosoma);
         }
     }

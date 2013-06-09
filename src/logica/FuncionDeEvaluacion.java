@@ -3,8 +3,6 @@ package logica;
 /**
  * Clase que define los m&eacute;todos que debe implementar una funci&oacute;n
  * de evaluaci&oacute;n.
- *
- * @author Jhonderson
  */
 public interface FuncionDeEvaluacion {
 

@@ -6,8 +6,8 @@ import logica.Gen;
 import logica.OperadorGenetico;
 
 /**
- *
- * @author jhonacd
+ * Operador de mutación del algoritmo genético. Tiene en cuenta que la
+ * soluci&oacute;n depende de la posici&oacute;n de los genes en el cromosoma.
  */
 public class OperadorDeMutacionCombinatorio implements OperadorGenetico {
 
@@ -35,7 +35,7 @@ public class OperadorDeMutacionCombinatorio implements OperadorGenetico {
                 * numeroDeCromosomas * numeroDeGenesPorCromosoma;
         List cromosomas = piscinaDeCromosomas.getCromosomas();
         for (int i = 0; i < numeroDeGenesAMutar; i++) {
-            
+
             int posicionCromosomaAleatorio = (int) (Math.random()
                     * numeroDeCromosomas);
             Cromosoma nuevoCromosoma = ((Cromosoma) cromosomas

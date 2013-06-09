@@ -3,8 +3,6 @@ package logica;
 /**
  * Interfaz que define los metodos que debe implementar un Cromosoma
  * determinado.
- *
- * @author Jhonderson
  */
 public interface Cromosoma {
 

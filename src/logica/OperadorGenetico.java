@@ -6,8 +6,6 @@ import logica_implementacion.PiscinaDeCromosomas;
 /**
  * Clase que define los m&eacute;todos que debe implementar un operador
  * gen&eacute;tico determinado.
- *
- * @author Jhonderson
  */
 public interface OperadorGenetico {
 

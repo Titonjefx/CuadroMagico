@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -21,8 +22,6 @@ import static utilidades.MapKeyConstantes.*;
 /**
  * Interfaz gr&aacute;fica para configurar y mostrar los resultados del
  * algoritmo gen&eacute;tico.
- *
- * @author Jhonderson
  */
 public class IGCuadroMagico extends JFrame {
 
@@ -39,14 +38,30 @@ public class IGCuadroMagico extends JFrame {
      * Crea una nueva ventana IGCuadroMagico
      */
     public IGCuadroMagico() {
+        super("Cuadro Magico - Algoritmo Genetico");
+        establecerParametrosPorDefecto();
+        initComponents();
+    }
+
+    private void establecerParametrosPorDefecto() {
         tamanoDeCuadroMagico = 3;
-        parametrosDeAlgoritmo = new HashMap<>();
+
+        if (parametrosDeAlgoritmo == null) {
+            parametrosDeAlgoritmo = new HashMap<>();
+        } else {
+            parametrosDeAlgoritmo.clear();
+        }
         parametrosDeAlgoritmo.put(MAP_KEY_INTERFAZ_GRAFICA, this);
         parametrosDeAlgoritmo.put(MAP_KEY_PORCENTAJE_CRUCE, 0.6);
         parametrosDeAlgoritmo.put(MAP_KEY_PORCENTAJE_MUTACION, 0.005);
         parametrosDeAlgoritmo.put(MAP_KEY_NUMERO_MAX_GENERACIONES, 100);
         parametrosDeAlgoritmo.put(MAP_KEY_NUM_CROM_POBLACION, 100);
-        initComponents();
+        parametrosDeAlgoritmo.put(MAP_KEY_ALGORITMO_COMBINATORIO,
+                false);
+    }
+    
+    public int getTamanoDeCuadroMagico() {
+        return tamanoDeCuadroMagico;
     }
 
     /**
@@ -197,6 +212,11 @@ public class IGCuadroMagico extends JFrame {
         final JSpinner spNumCromPoblacion = new JSpinner(
                 spModeloNumCromPoblacion);
 
+        final JCheckBox cbAlgoritmoCombinatorio = new JCheckBox(
+                "Algoritmo Combinatorio");
+        cbAlgoritmoCombinatorio.setSelected((boolean) parametrosDeAlgoritmo
+                .get(MAP_KEY_ALGORITMO_COMBINATORIO));
+
         JButton btEstablecerParametros = new JButton("Establecer");
         btEstablecerParametros.addActionListener(
                 new java.awt.event.ActionListener() {
@@ -219,6 +239,8 @@ public class IGCuadroMagico extends JFrame {
                                 MAP_KEY_NUMERO_MAX_GENERACIONES);
                         getParametrosDeAlgoritmo().remove(
                                 MAP_KEY_NUM_CROM_POBLACION);
+                        getParametrosDeAlgoritmo().remove(
+                                MAP_KEY_ALGORITMO_COMBINATORIO);
 
                         getParametrosDeAlgoritmo().put(MAP_KEY_PORCENTAJE_CRUCE,
                                 nuevoPorcentajeCruce);
@@ -231,27 +253,54 @@ public class IGCuadroMagico extends JFrame {
                         getParametrosDeAlgoritmo().put(
                                 MAP_KEY_NUM_CROM_POBLACION,
                                 nuevoNumCromPoblacion);
+                        getParametrosDeAlgoritmo().put(
+                                MAP_KEY_ALGORITMO_COMBINATORIO,
+                                cbAlgoritmoCombinatorio.isSelected());
+
                         vParametrosAlgoritmo.setVisible(false);
                     }
                 });
 
+        final JButton btEstablecerParametrosPorDefecto = new JButton(
+                "Parámetros por Defecto");
+        btEstablecerParametrosPorDefecto.addActionListener(
+                new java.awt.event.ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent evt) {
+                        establecerParametrosPorDefecto();
+                        spPorcentajeCruce.setValue((double) parametrosDeAlgoritmo
+                                .get(MAP_KEY_PORCENTAJE_CRUCE));
+                        spPorcentajeMutacion.setValue((double) parametrosDeAlgoritmo
+                                .get(MAP_KEY_PORCENTAJE_MUTACION));
+                        spNumMaxGeneraciones.setValue((int) parametrosDeAlgoritmo
+                                .get(MAP_KEY_NUMERO_MAX_GENERACIONES));
+                        spNumCromPoblacion.setValue((int) parametrosDeAlgoritmo
+                                .get(MAP_KEY_NUM_CROM_POBLACION));
+                        cbAlgoritmoCombinatorio.setSelected((boolean) parametrosDeAlgoritmo
+                                .get(MAP_KEY_ALGORITMO_COMBINATORIO));
+                    }
+                });
+
         final int GRIYA_COLUMNAS = 2;
-        final int GRIYA_FILAS = 5;
+        final int GRIYA_FILAS = 6;
         final int GRIYA_ESPACIADO = 5;
         GridLayout griya = new GridLayout(GRIYA_FILAS, GRIYA_COLUMNAS,
                 GRIYA_ESPACIADO, GRIYA_ESPACIADO);
-        JPanel pTamano = new JPanel(griya);
+        JPanel pParametrosAlgoritmo = new JPanel(griya);
 
-        pTamano.add(lbPorcentajeCruce);
-        pTamano.add(spPorcentajeCruce);
-        pTamano.add(lbPorcentajeMutacion);
-        pTamano.add(spPorcentajeMutacion);
-        pTamano.add(lbNumMaxGeneraciones);
-        pTamano.add(spNumMaxGeneraciones);
-        pTamano.add(lbNumCromPoblacion);
-        pTamano.add(spNumCromPoblacion);
-        pTamano.add(btEstablecerParametros);
-        vParametrosAlgoritmo.getContentPane().add(pTamano);
+        pParametrosAlgoritmo.add(lbPorcentajeCruce);
+        pParametrosAlgoritmo.add(spPorcentajeCruce);
+        pParametrosAlgoritmo.add(lbPorcentajeMutacion);
+        pParametrosAlgoritmo.add(spPorcentajeMutacion);
+        pParametrosAlgoritmo.add(lbNumMaxGeneraciones);
+        pParametrosAlgoritmo.add(spNumMaxGeneraciones);
+        pParametrosAlgoritmo.add(lbNumCromPoblacion);
+        pParametrosAlgoritmo.add(spNumCromPoblacion);
+        pParametrosAlgoritmo.add(cbAlgoritmoCombinatorio);
+        pParametrosAlgoritmo.add(new JLabel(""));
+        pParametrosAlgoritmo.add(btEstablecerParametrosPorDefecto);
+        pParametrosAlgoritmo.add(btEstablecerParametros);
+        vParametrosAlgoritmo.getContentPane().add(pParametrosAlgoritmo);
 
         vParametrosAlgoritmo.pack();
         vParametrosAlgoritmo.setVisible(true);
@@ -269,7 +318,8 @@ public class IGCuadroMagico extends JFrame {
 
         JLabel lbTamano = new JLabel("Tamano de Cuadro Magico: ");
 
-        SpinnerNumberModel spModelo = new SpinnerNumberModel(3, 3, 20, 1);
+        SpinnerNumberModel spModelo = new SpinnerNumberModel(tamanoDeCuadroMagico,
+                3, 20, 1);
         final JSpinner spTamano = new JSpinner(spModelo);
 
         JButton btEstablecerTamano = new JButton("Establecer");
@@ -420,20 +470,18 @@ public class IGCuadroMagico extends JFrame {
                 if (pMatrizColores[puntosQueCumplen[i].x][puntosQueCumplen[i].y]
                         .getBackground().equals(Color.LIGHT_GRAY)) {
                     pMatrizColores[puntosQueCumplen[i].x][puntosQueCumplen[i].y]
-                        .setBackground(new Color(120, 140, 194));
-                } else if (pMatrizColores[puntosQueCumplen[i].x]
-                        [puntosQueCumplen[i].y]
+                            .setBackground(new Color(120, 140, 194));
+                } else if (pMatrizColores[puntosQueCumplen[i].x][puntosQueCumplen[i].y]
                         .getBackground().equals(new Color(120, 140, 194))) {
                     pMatrizColores[puntosQueCumplen[i].x][puntosQueCumplen[i].y]
-                        .setBackground(new Color(159, 117, 198));
-                } else if (pMatrizColores[puntosQueCumplen[i].x]
-                        [puntosQueCumplen[i].y]
+                            .setBackground(new Color(159, 117, 198));
+                } else if (pMatrizColores[puntosQueCumplen[i].x][puntosQueCumplen[i].y]
                         .getBackground().equals(new Color(159, 117, 198))) {
                     pMatrizColores[puntosQueCumplen[i].x][puntosQueCumplen[i].y]
-                        .setBackground(new Color(242, 72, 115));
+                            .setBackground(new Color(242, 72, 115));
                 }
                 /*pMatrizColores[puntosQueCumplen[i].x][puntosQueCumplen[i].y]
-                        .setBackground(new Color(39, 123, 237));*/
+                 .setBackground(new Color(39, 123, 237));*/
             }
         }
         this.paintAll(this.getGraphics());

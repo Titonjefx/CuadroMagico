@@ -5,8 +5,6 @@ import logica_implementacion.Poblacion;
 /**
  * Clase que define los m&eacute;todos que debe tener una funci&oacute;n de
  * aptitud. Algunos son implementados.
- *
- * @author Jhonderson
  */
 public abstract class FuncionDeAptitud {
 

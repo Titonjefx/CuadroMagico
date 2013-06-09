@@ -6,8 +6,6 @@ import logica.Gen;
 
 /**
  * Clase que representa un Cromosoma. Implementa la interfaz Cromosoma.
- *
- * @author Jhonderson
  */
 public class CromosomaImpl implements Cromosoma {
 

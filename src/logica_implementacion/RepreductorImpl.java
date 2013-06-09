@@ -8,8 +8,6 @@ import logica.*;
 /**
  * Clase que representa el reproductor en el algoritmo gen&eacute;tico.
  * Implementa la interfaz reproductor.
- *
- * @author Jhonderson
  */
 public class RepreductorImpl implements Reproductor {
 

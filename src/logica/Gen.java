@@ -2,8 +2,6 @@ package logica;
 
 /**
  * Interfaz que define los metodos que debe implementar un Gen determinado.
- *
- * @author Jhonderson
  */
 public interface Gen {
 

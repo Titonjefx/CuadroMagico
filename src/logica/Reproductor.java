@@ -6,8 +6,6 @@ import logica_implementacion.Recursos;
 /**
  * Define los m&eacute;todos que deben ser implementados en un reproductor
  * determinado.
- *
- * @author Jhonderson
  */
 public interface Reproductor {
 

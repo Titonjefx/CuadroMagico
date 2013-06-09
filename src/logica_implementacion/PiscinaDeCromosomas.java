@@ -8,8 +8,6 @@ import logica.Cromosoma;
  * Clase que funciona como una colecci&oacute;n de cromosomas. Aqu&iacute; se
  * guardar&aacute;n los cromosomas seleccionados para la aplicaci&oacute;n de
  * los operadores gen&eacute;ticos.
- *
- * @author Jhonderson
  */
 public class PiscinaDeCromosomas {
 

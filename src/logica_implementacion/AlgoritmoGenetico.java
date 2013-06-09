@@ -3,16 +3,17 @@ package logica_implementacion;
 import interfazgrafica.IGCuadroMagico;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import logica.Cromosoma;
+import logica.Gen;
 import static utilidades.MapKeyConstantes.*;
 
 /**
  * Clase donde se realiza el algoritmo gen&eacute;tico.
- *
- * @author Jhonderson
  */
 public class AlgoritmoGenetico {
 
@@ -35,6 +36,8 @@ public class AlgoritmoGenetico {
     public void setParametrosDeAlgoritmoGenetico(
             Map<String, Object> parametros) {
         this.parametros = parametros;
+
+        //Imprimimos los parametros del algoritmo -- (Borrar)
         System.err.println("Porcentaje de cruce: "
                 + parametros.get(MAP_KEY_PORCENTAJE_CRUCE));
         System.err.println("Porcentaje de mutacion: "
@@ -43,6 +46,13 @@ public class AlgoritmoGenetico {
                 + parametros.get(MAP_KEY_NUMERO_MAX_GENERACIONES));
         System.err.println("Numero de cromosomas en la poblacion: "
                 + parametros.get(MAP_KEY_NUM_CROM_POBLACION));
+        System.err.println("¿Es el algoritmo combinatorio?: "
+                + (((boolean) parametros.get(MAP_KEY_ALGORITMO_COMBINATORIO))
+                ? "Si" : "No"));
+        System.err.println("Tamano del Cuadrado Magico: "
+                + ((IGCuadroMagico) parametros.get(MAP_KEY_INTERFAZ_GRAFICA))
+                .getTamanoDeCuadroMagico());
+        // -- (Borrar)
     }
 
     /**
@@ -50,6 +60,54 @@ public class AlgoritmoGenetico {
      */
     public void aplicarAlgoritmo() {
         //Algoritmo
+
+        double porcentajeDeCruce = (double) parametros.get(
+                MAP_KEY_PORCENTAJE_CRUCE);
+        double porcentajeDeMutacion = (double) parametros.get(
+                MAP_KEY_PORCENTAJE_MUTACION);
+        int numMaxGeneraciones = (int) parametros.get(
+                MAP_KEY_NUMERO_MAX_GENERACIONES);
+        int numCromPoblacion = (int) parametros.get(
+                MAP_KEY_NUM_CROM_POBLACION);
+        boolean esAlgCombinatorio = (boolean) parametros.get(
+                MAP_KEY_ALGORITMO_COMBINATORIO);
+        int tamanoCuadroMagico = ((IGCuadroMagico) parametros.get(
+                MAP_KEY_INTERFAZ_GRAFICA)).getTamanoDeCuadroMagico();
+        int numeroDeGenesPorCromosoma = tamanoCuadroMagico*tamanoCuadroMagico;
+
+        Cromosoma cromosomaInicial = new CromosomaImpl(numeroDeGenesPorCromosoma);
+        List numerosAleatorios = new ArrayList();
+
+        for (int i = 1; i <= numeroDeGenesPorCromosoma; i++) {
+            numerosAleatorios.add(i);
+        }
+
+        Collections.shuffle(numerosAleatorios);
+
+        for (int i = 0; i < numeroDeGenesPorCromosoma; i++) {
+            Gen genEntero = new GenEntero(1, numeroDeGenesPorCromosoma);
+            genEntero.setAlelo((int) numerosAleatorios.get(i));
+        }
+
+        Recursos recursosDeAlgoritmoGenetico = new Recursos();
+
+        recursosDeAlgoritmoGenetico.setTamanoDeLaPoblacion(numCromPoblacion);
+        recursosDeAlgoritmoGenetico.setPorcentajeDeMutacion(
+                porcentajeDeMutacion);
+        recursosDeAlgoritmoGenetico.setPorcentajeDeCruce(porcentajeDeCruce);
+
+        recursosDeAlgoritmoGenetico.setNumeroDeCromosomasAReproducir((int) (numCromPoblacion / 2));
+
+        recursosDeAlgoritmoGenetico.setSelectorNatural(null);
+        recursosDeAlgoritmoGenetico.setReproductor(null);
+        recursosDeAlgoritmoGenetico.setPiscinaDeCromosomas(null);
+        recursosDeAlgoritmoGenetico.setFuncionDeEvaluacion(null);
+        recursosDeAlgoritmoGenetico.setFuncionDeAptitud(null);
+        recursosDeAlgoritmoGenetico.setCromosomaDeMuestra(null);
+
+        //esta propiedad sera borrada, para que el tamano de la poblacion sea
+        //constante siempre en este algoritmo
+        recursosDeAlgoritmoGenetico.setEsConstanteElTamanoDePoblacion(true);
 
         //...
 
@@ -70,7 +128,7 @@ public class AlgoritmoGenetico {
 
     /**
      * Regresa el conjunto de puntos que conforman las listas que cumplen con la
-     * condici&acute;n principal de un cuadro m&aacute;gico, y es que cada fila
+     * condici&acute;n principal de un cuadro m&aacute;gico, y es que cada fila,
      * columna y diagonal sumen igual. Este es el m&eacute;todo m&aacute;s
      * costoso del algoritmo, pero solo se ejecuta para mostrar la
      * soluci&oacute;n hallada gr&aacute;ficamente.
@@ -94,22 +152,22 @@ public class AlgoritmoGenetico {
          int pos = (i - 1) * numeroDeGenes + j;
          if (i == j) {
          sumasPorLista[(2 * tamanoDeCuadrado)] =
-                            (sumasPorLista[(2 * tamanoDeCuadrado)]
-                            + ((Integer) genes[pos].getAlelo())
+         (sumasPorLista[(2 * tamanoDeCuadrado)]
+         + ((Integer) genes[pos].getAlelo())
          .intValue());
          }
          if (i == ((numeroDeGenes - 1) - j)) {
          sumasPorLista[(2 * tamanoDeCuadrado) + 1] =
-                            (sumasPorLista[(2 * tamanoDeCuadrado)
-                            + 1] + ((Integer) genes[pos].getAlelo())
+         (sumasPorLista[(2 * tamanoDeCuadrado)
+         + 1] + ((Integer) genes[pos].getAlelo())
          .intValue());
          }
          sumasPorLista[i] = (sumasPorLista[i] + ((Integer) genes[pos]
-                            .getAlelo()).intValue());
+         .getAlelo()).intValue());
 
          sumasPorLista[tamanoDeCuadrado + j] =
-                        (sumasPorLista[tamanoDeCuadrado + j] + ((Integer)
-                        genes[pos].getAlelo()).intValue()));
+         (sumasPorLista[tamanoDeCuadrado + j] + ((Integer)
+         genes[pos].getAlelo()).intValue()));
          }
          }*/
 

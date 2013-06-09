@@ -12,8 +12,6 @@ import logica.SelectorNatural;
 /**
  * Clase donde estar&aacute;n todos los recursos necesarios para el
  * funcionamiento del algoritmo gen&eacute;tico.
- *
- * @author Jhonderson
  */
 public class Recursos {
 
@@ -67,6 +65,10 @@ public class Recursos {
      * Porcentaje de mutaci&oacute;n del algoritmo gen&eacute;tico.
      */
     private double porcentajeDeMutacion;
+    /**
+     * Porcentaje de mutaci&oacute;n del algoritmo gen&eacute;tico.
+     */
+    private double porcentajeDeCruce;
     /**
      * N&uacute;mero de cromosomas que se seleccionan para ser ingresados a la
      * piscina de cromosomas y aplicarles los operadores gen&eacute;ticos
@@ -312,20 +314,60 @@ public class Recursos {
         return reproductor;
     }
 
+    /**
+     * Establece el porcentaje de mutaci&oacute;n del algoritmo gen&eacute;tico.
+     *
+     * @param porcentajeDeMutacion porcentaje de mutaci&oacute;n
+     */
     public void setPorcentajeDeMutacion(double porcentajeDeMutacion) {
         this.porcentajeDeMutacion = porcentajeDeMutacion;
     }
 
+    /**
+     * Regresa el porcentaje de mutaci&oacute;n del algoritmo gen&eacute;tico.
+     *
+     * @return porcentaje de mutaci&oacute;n
+     */
     public double getPorcentajeDeMutacion() {
         return this.porcentajeDeMutacion;
     }
 
+    /**
+     * Regresa el numero de cromosomas que seran ingresados a la piscina de
+     * cromosomas para ser reproducidos.
+     *
+     * @return numero de cromosomas a reproducir
+     */
     public int getNumeroDeCromosomasAReproducir() {
         return numeroDeCromosomasAReproducir;
     }
-    
+
+    /**
+     * Establece el numero de cromosomas que seran ingresados a la piscina de
+     * cromosomas para ser reproducidos.
+     *
+     * @param numeroDeCromosomasAReproducir numero de cromosomas a reproducir
+     */
     public void setNumeroDeCromosomasAReproducir(
             int numeroDeCromosomasAReproducir) {
         this.numeroDeCromosomasAReproducir = numeroDeCromosomasAReproducir;
+    }
+
+    /**
+     * Establece el porcentaje de cruce del algoritmo gen&eacute;tico.
+     *
+     * @param porcentajeDeCruce porcentaje de cruce
+     */
+    public void setPorcentajeDeCruce(double porcentajeDeCruce) {
+        this.porcentajeDeCruce = porcentajeDeCruce;
+    }
+
+    /**
+     * Regresa el porcentaje de cruce del algoritmo gen&eacute;tico.
+     *
+     * @return porcentaje de cruce
+     */
+    public double getPorcentajeDeCuce() {
+        return porcentajeDeCruce;
     }
 }

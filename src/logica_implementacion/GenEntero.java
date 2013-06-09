@@ -5,8 +5,6 @@ import logica.Gen;
 /**
  * Clase que representa a un Gen cuyos alelos son n&uacute;meros enteros.
  * implementa la interfaz Gen.
- *
- * @author Jhonderson
  */
 public class GenEntero implements Gen {
 
