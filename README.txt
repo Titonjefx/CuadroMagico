@@ -56,3 +56,8 @@ Febrero - Junio 2013
 Universidad del Valle
 
 -----------------------------------------
+
+Ubicación: https://github.com/jhonderson/CuadroMagico
+Api: CuadroMagico/dist/javadoc/index.html
+
+-----------------------------------------
