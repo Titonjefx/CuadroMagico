@@ -32,10 +32,9 @@ public class Poblacion {
      * que el algoritmo funcione
      * @param tamanoDeLaPoblacion tama&ntilde;o de la poblaci&oacute;n
      */
-    public Poblacion(Recursos recursos, int tamanoDeLaPoblacion) {
+    public Poblacion(Recursos recursos) {
         this.recursos = recursos;
-        this.cromosomas = new ArrayList(tamanoDeLaPoblacion);
-        this.tamanoDePoblacion = tamanoDeLaPoblacion;
+        this.cromosomas = new ArrayList();
     }
 
     public Poblacion(Recursos recursos, List cromosomas) {
@@ -46,12 +45,12 @@ public class Poblacion {
 
     public void agregarCromosoma(Cromosoma cromosoma) {
         this.cromosomas.add(cromosoma);
-        tamanoDePoblacion++;
+        tamanoDePoblacion = cromosomas.size();
     }
 
     public void agregarCromosomas(Poblacion poblacion) {
         this.cromosomas.addAll(poblacion.getCromosomas());
-        tamanoDePoblacion += poblacion.getCromosomas().size();
+        tamanoDePoblacion = cromosomas.size();
     }
 
     public List getCromosomas() {
@@ -115,7 +114,7 @@ public class Poblacion {
 
     public void removerCromosoma(int indice) {
         cromosomas.remove(indice);
-        tamanoDePoblacion--;
+        tamanoDePoblacion = cromosomas.size();
     }
 
     public void ordenarCromosomasPorAptitud() {
@@ -147,19 +146,20 @@ public class Poblacion {
 
         while (tamanoDePoblacion > tamanoMaximo) {
             removerCromosoma(tamanoDePoblacion - 1);
-            tamanoDePoblacion--;
+            tamanoDePoblacion = cromosomas.size();
         }
     }
 
     public void llenarPoblacion() {
         Cromosoma cromosomaMuestra = getRecursos().getCromosomaDeMuestra();
-        for (int i = 0; i < tamanoDePoblacion; i++) {
+        int tamanoMaximo = recursos.getTamanoDeLaPoblacion();
+        for (int i = 0; i < tamanoMaximo; i++) {
             Cromosoma copia = cromosomaMuestra.clonar();
             Gen[] genes = copia.getGenes();
             Gen[] nuevosGenes = new Gen[genes.length];
             for (int j = 0; j < genes.length; j++) {
                 nuevosGenes[j] = genes[j].nuevoGen();
-                nuevosGenes[j].setAlelo(genes[j].getAlelo());
+                nuevosGenes[j].setAlelo(new Integer((int)genes[j].getAlelo()));
             }
 
             for (int j = 0; j < genes.length; j++) {

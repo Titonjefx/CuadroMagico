@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -21,7 +22,7 @@ import static utilidades.MapKeyConstantes.*;
 
 /**
  * Interfaz gr&aacute;fica para configurar y mostrar los resultados del
- * algoritmo gen&eacute;tico.
+ * algoritmo gen&eacute;tico cuadro m&aacute;gico.
  */
 public class IGCuadroMagico extends JFrame {
 
@@ -30,15 +31,21 @@ public class IGCuadroMagico extends JFrame {
      */
     private int tamanoDeCuadroMagico;
     /**
-     * Mapeo donde estan los parametros del algoritmo.
+     * Mapeo donde estan los par&aacute;metros del algoritmo.
      */
     private Map<String, Object> parametrosDeAlgoritmo;
+    /**
+     * Texto que se muestra cuando se pasa el puntero del mouse sobre el panel
+     * del cuadro m&aacute;gico.
+     */
+    private String informacionResultados = "Panel donde se muestra el resultado"
+            + " del algoritmo genético para el problema del cuadro mágico.";
 
     /**
      * Crea una nueva ventana IGCuadroMagico
      */
     public IGCuadroMagico() {
-        super("Cuadro Magico - Algoritmo Genetico");
+        super("Cuadro Mágico - Algoritmo Genético");
         establecerParametrosPorDefecto();
         initComponents();
     }
@@ -57,6 +64,8 @@ public class IGCuadroMagico extends JFrame {
         parametrosDeAlgoritmo.put(MAP_KEY_NUM_CROM_POBLACION, 100);
         parametrosDeAlgoritmo.put(MAP_KEY_ALGORITMO_COMBINATORIO,
                 false);
+        parametrosDeAlgoritmo.put(MAP_KEY_TIPO_SELECTOR,
+                MAP_KEY_SELECTOR_INGENUO);
     }
     
     public int getTamanoDeCuadroMagico() {
@@ -87,6 +96,13 @@ public class IGCuadroMagico extends JFrame {
         pPanelGeneral.setLayout(new java.awt.BorderLayout());
 
         pPanelDeCuadroMagico.setBackground(new java.awt.Color(255, 255, 255));
+        pPanelDeCuadroMagico.setToolTipText("");
+        pPanelDeCuadroMagico.setPreferredSize(new java.awt.Dimension(350, 274));
+        pPanelDeCuadroMagico.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                pPanelDeCuadroMagicoMouseMoved(evt);
+            }
+        });
         pPanelDeCuadroMagico.setLayout(new java.awt.GridLayout(1, 1));
         pPanelGeneral.add(pPanelDeCuadroMagico, java.awt.BorderLayout.CENTER);
 
@@ -100,7 +116,7 @@ public class IGCuadroMagico extends JFrame {
 
         jMenu1.setText("Configuraciones");
 
-        miParametros.setText("Parametros Del Algoritmo");
+        miParametros.setText("Parámetros del Algoritmo");
         miParametros.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 miParametrosActionPerformed(evt);
@@ -108,7 +124,7 @@ public class IGCuadroMagico extends JFrame {
         });
         jMenu1.add(miParametros);
 
-        miTamano.setText("Tamaño de Cuadro Magico");
+        miTamano.setText("Tamaño de Cuadro Mágico");
         miTamano.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 miTamanoActionPerformed(evt);
@@ -136,11 +152,11 @@ public class IGCuadroMagico extends JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pPanelGeneral, javax.swing.GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE)
+            .addComponent(pPanelGeneral, javax.swing.GroupLayout.DEFAULT_SIZE, 415, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pPanelGeneral, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
+            .addComponent(pPanelGeneral, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -170,8 +186,8 @@ public class IGCuadroMagico extends JFrame {
      * @param evt evento que se genera al ser clickeado el menu item
      */
     private void miParametrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miParametrosActionPerformed
-        final JDialog vParametrosAlgoritmo = new JDialog(this, "Parametros de "
-                + "Cuadro Magico", true);
+        final JDialog vParametrosAlgoritmo = new JDialog(this, "Parámetros de "
+                + "Cuadro Mágico", true);
 
         JLabel lbPorcentajeCruce = new JLabel("Porcentaje de Cruce (x100%): ");
 
@@ -181,7 +197,7 @@ public class IGCuadroMagico extends JFrame {
         final JSpinner spPorcentajeCruce = new JSpinner(
                 spModeloPorcentajeCruce);
 
-        JLabel lbPorcentajeMutacion = new JLabel("Porcentaje de Mutacion "
+        JLabel lbPorcentajeMutacion = new JLabel("Porcentaje de Mutación "
                 + "(x100%): ");
 
         SpinnerNumberModel spModeloPorcentajeMutacion = new SpinnerNumberModel(
@@ -192,7 +208,7 @@ public class IGCuadroMagico extends JFrame {
                 spModeloPorcentajeMutacion);
 
         JLabel lbNumMaxGeneraciones = new JLabel(
-                "Numero Maximo de Generaciones: ");
+                "Número Máximo de Generaciones: ");
 
         SpinnerNumberModel spModeloNumMaxGeneraciones = new SpinnerNumberModel(
                 ((Integer) parametrosDeAlgoritmo.get(
@@ -202,7 +218,7 @@ public class IGCuadroMagico extends JFrame {
                 spModeloNumMaxGeneraciones);
 
         JLabel lbNumCromPoblacion = new JLabel(
-                "Numero de Cromosomas en la Poblacion: ");
+                "Número de Cromosomas en la Población: ");
 
         SpinnerNumberModel spModeloNumCromPoblacion = new SpinnerNumberModel(
                 ((Integer) parametrosDeAlgoritmo.get(
@@ -210,6 +226,14 @@ public class IGCuadroMagico extends JFrame {
                 1);
         final JSpinner spNumCromPoblacion = new JSpinner(
                 spModeloNumCromPoblacion);
+        
+        JLabel lbTipoSelector = new JLabel(
+                "Tipo de Selector Natural: ");
+        
+        final JComboBox cbTipoSelector = new JComboBox(new Object[]{
+            MAP_KEY_SELECTOR_INGENUO, MAP_KEY_SELECTOR_TORNEO});
+        
+        cbTipoSelector.setSelectedItem(parametrosDeAlgoritmo.get(MAP_KEY_TIPO_SELECTOR));
 
         final JCheckBox cbAlgoritmoCombinatorio = new JCheckBox(
                 "Algoritmo Combinatorio");
@@ -229,6 +253,7 @@ public class IGCuadroMagico extends JFrame {
                                 spNumMaxGeneraciones.getValue().toString());
                         int nuevoNumCromPoblacion = Integer.parseInt(
                                 spNumCromPoblacion.getValue().toString());
+                        String tipoSelector = (String)cbTipoSelector.getSelectedItem();
 
                         getParametrosDeAlgoritmo().remove(
                                 MAP_KEY_PORCENTAJE_CRUCE);
@@ -240,6 +265,8 @@ public class IGCuadroMagico extends JFrame {
                                 MAP_KEY_NUM_CROM_POBLACION);
                         getParametrosDeAlgoritmo().remove(
                                 MAP_KEY_ALGORITMO_COMBINATORIO);
+                        getParametrosDeAlgoritmo().remove(
+                                MAP_KEY_TIPO_SELECTOR);
 
                         getParametrosDeAlgoritmo().put(MAP_KEY_PORCENTAJE_CRUCE,
                                 nuevoPorcentajeCruce);
@@ -255,6 +282,8 @@ public class IGCuadroMagico extends JFrame {
                         getParametrosDeAlgoritmo().put(
                                 MAP_KEY_ALGORITMO_COMBINATORIO,
                                 cbAlgoritmoCombinatorio.isSelected());
+                        getParametrosDeAlgoritmo().put(MAP_KEY_TIPO_SELECTOR,
+                                tipoSelector);
 
                         vParametrosAlgoritmo.setVisible(false);
                     }
@@ -277,11 +306,13 @@ public class IGCuadroMagico extends JFrame {
                                 .get(MAP_KEY_NUM_CROM_POBLACION));
                         cbAlgoritmoCombinatorio.setSelected((boolean) parametrosDeAlgoritmo
                                 .get(MAP_KEY_ALGORITMO_COMBINATORIO));
+                        cbTipoSelector.setSelectedItem((String) parametrosDeAlgoritmo
+                                .get(MAP_KEY_TIPO_SELECTOR));
                     }
                 });
 
         final int GRIYA_COLUMNAS = 2;
-        final int GRIYA_FILAS = 6;
+        final int GRIYA_FILAS = 7;
         final int GRIYA_ESPACIADO = 5;
         GridLayout griya = new GridLayout(GRIYA_FILAS, GRIYA_COLUMNAS,
                 GRIYA_ESPACIADO, GRIYA_ESPACIADO);
@@ -295,6 +326,8 @@ public class IGCuadroMagico extends JFrame {
         pParametrosAlgoritmo.add(spNumMaxGeneraciones);
         pParametrosAlgoritmo.add(lbNumCromPoblacion);
         pParametrosAlgoritmo.add(spNumCromPoblacion);
+        pParametrosAlgoritmo.add(lbTipoSelector);
+        pParametrosAlgoritmo.add(cbTipoSelector);
         pParametrosAlgoritmo.add(cbAlgoritmoCombinatorio);
         pParametrosAlgoritmo.add(new JLabel(""));
         pParametrosAlgoritmo.add(btEstablecerParametrosPorDefecto);
@@ -312,10 +345,10 @@ public class IGCuadroMagico extends JFrame {
      * @param evt evento que se genera al ser clickeado el menu item
      */
     private void miTamanoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miTamanoActionPerformed
-        final JDialog vTamanoDeCuadro = new JDialog(this, "Tamano de Cuadro "
-                + "Magico", true);
+        final JDialog vTamanoDeCuadro = new JDialog(this, "Tamaño de Cuadro "
+                + "Mágico", true);
 
-        JLabel lbTamano = new JLabel("Tamano de Cuadro Magico: ");
+        JLabel lbTamano = new JLabel("Tamaño de Cuadro Mágico: ");
 
         SpinnerNumberModel spModelo = new SpinnerNumberModel(tamanoDeCuadroMagico,
                 3, 20, 1);
@@ -350,7 +383,7 @@ public class IGCuadroMagico extends JFrame {
      * @param evt evento que se genera al ser clickeado el menu item
      */
     private void miAcercaDeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miAcercaDeActionPerformed
-        JLabel lbTitulo = new JLabel("Cuadro Magico", JLabel.CENTER);
+        JLabel lbTitulo = new JLabel("Cuadro Mágico", JLabel.CENTER);
         JLabel lbDesarrolladores = new JLabel("Desarrolladores:",
                 JLabel.CENTER);
         JLabel lbAutor1 = new JLabel("Jhon Anderson Cardenas Diaz",
@@ -397,6 +430,10 @@ public class IGCuadroMagico extends JFrame {
         dgAcercaDe.setVisible(true);
     }//GEN-LAST:event_miAcercaDeActionPerformed
 
+    private void pPanelDeCuadroMagicoMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pPanelDeCuadroMagicoMouseMoved
+        this.pPanelDeCuadroMagico.setToolTipText(informacionResultados);
+    }//GEN-LAST:event_pPanelDeCuadroMagicoMouseMoved
+
     /**
      * M&eacute;todo para establecer el tama&ntilde;o del cuadro m&aacute;gico.
      *
@@ -420,7 +457,18 @@ public class IGCuadroMagico extends JFrame {
         pintarCuadroMagico((int[][]) resultadosDeAlgoritmoGenetico.get(
                 MAP_KEY_MATRIZ_CUADRO_MAGICO),
                 (Point[]) resultadosDeAlgoritmoGenetico.get(
-                MAP_KEY_LINEAS_QUE_CUMPLEN));
+                MAP_KEY_TUPLAS_QUE_CUMPLEN));
+        
+        informacionResultados = "Tuplas que cumplen con la suma: " + 
+                resultadosDeAlgoritmoGenetico.get(
+                MAP_KEY_NUMERO_DE_TUPLAS_QUE_CUMPLEN);
+        informacionResultados += "; Tiempo Transcurrido: " +
+                resultadosDeAlgoritmoGenetico.get(MAP_KEY_TIEMPO_TRANSCURRIDO) +
+                " (milisegundos)";
+        informacionResultados += "; Número de alelos repetidos: " +
+                resultadosDeAlgoritmoGenetico.get(
+                MAP_KEY_NUMERO_DE_ALELOS_REPETIDOS);
+        informacionResultados += ".";
     }
 
     /**

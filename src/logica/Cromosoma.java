@@ -58,22 +58,6 @@ public interface Cromosoma {
     double getValorDeAptitud();
 
     /**
-     * Establece si este Cromosoma es seleccionado para la pr&oacute;xima
-     * generaci&oacute;n.
-     *
-     * @param esSeleccionado true si es seleccionado, false de lo contrario
-     */
-    void setEsSeleccionadoParaLaSiguienteGeneracion(boolean esSeleccionado);
-
-    /**
-     * Informa si este Cromosoma es seleccionado para la pr&oacute;xima
-     * generaci&oacute;n.
-     *
-     * @return true si es seleccionado, false de lo contrario
-     */
-    boolean esSeleccionadoParaLaSiguienteGeneracion();
-
-    /**
      * Incrementa la edad del cromosoma actual; la edad es el n&uacute;mero de
      * veces que ha pasado de generaci&oacute;n en generaci&oacute;n.
      */

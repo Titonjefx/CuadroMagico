@@ -5,6 +5,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -41,27 +42,6 @@ public class AlgoritmoGenetico {
     public void setParametrosDeAlgoritmoGenetico(
             Map<String, Object> parametros) {
         this.parametros = parametros;
-
-        /**
-         * TODO. Imprimimos los parametros del algoritmo -- (Borrar)
-         */
-        System.err.println("Porcentaje de cruce: "
-                + parametros.get(MAP_KEY_PORCENTAJE_CRUCE));
-        System.err.println("Porcentaje de mutacion: "
-                + parametros.get(MAP_KEY_PORCENTAJE_MUTACION));
-        System.err.println("Numero maximo de generaciones: "
-                + parametros.get(MAP_KEY_NUMERO_MAX_GENERACIONES));
-        System.err.println("Numero de cromosomas en la poblacion: "
-                + parametros.get(MAP_KEY_NUM_CROM_POBLACION));
-        System.err.println("¿Es el algoritmo combinatorio?: "
-                + (((boolean) parametros.get(MAP_KEY_ALGORITMO_COMBINATORIO))
-                ? "Si" : "No"));
-        System.err.println("Tamano del Cuadrado Magico: "
-                + ((IGCuadroMagico) parametros.get(MAP_KEY_INTERFAZ_GRAFICA))
-                .getTamanoDeCuadroMagico());
-        /**
-         * -- (Borrar)
-         */
     }
 
     /**
@@ -86,6 +66,7 @@ public class AlgoritmoGenetico {
         int tamanoCuadroMagico = ((IGCuadroMagico) parametros.get(
                 MAP_KEY_INTERFAZ_GRAFICA)).getTamanoDeCuadroMagico();
         int numeroDeGenesPorCromosoma = tamanoCuadroMagico * tamanoCuadroMagico;
+        String tipoSelector = (String) parametros.get(MAP_KEY_TIPO_SELECTOR);
 
         //Cromosoma a partir del cual se crearan los demas cromosomas de la
         //poblacion.
@@ -105,7 +86,7 @@ public class AlgoritmoGenetico {
         //al cromosomaInicial.
         for (int i = 0; i < numeroDeGenesPorCromosoma; i++) {
             Gen genEntero = new GenEntero(1, numeroDeGenesPorCromosoma);
-            genEntero.setAlelo((int) numerosAleatorios.get(i));
+            genEntero.setAlelo(new Integer((int) numerosAleatorios.get(i)));
             cromosomaInicial.setGen(i, genEntero);
         }
 
@@ -126,7 +107,7 @@ public class AlgoritmoGenetico {
         //Se establece el numero de cromosomas que seran seleccionados para la
         //reproduccion.
         recursosDeAlgoritmoGenetico.setNumeroDeCromosomasAReproducir(
-                (int) porcentajeDeCruce * numCromPoblacion);
+                (int) (porcentajeDeCruce * numCromPoblacion));
 
         //Se establece un cromosoma a partir del cual se crearan los demas
         //cromosomas de la poblacion. Contiene genes cuyos alelos son numeros
@@ -136,8 +117,13 @@ public class AlgoritmoGenetico {
 
         //Se agrega el selector natural usado para seleccionar los cromosomas
         //que se reproduciran.
-        SelectorNatural selectorNatural = new Selector(
-                recursosDeAlgoritmoGenetico);
+        SelectorNatural selectorNatural;
+        if (tipoSelector.equals(MAP_KEY_SELECTOR_INGENUO)) {
+            selectorNatural = new SelectorIngenuo(recursosDeAlgoritmoGenetico);
+        } else/* if (tipoSelector.equals(MAP_KEY_SELECTOR_TORNEO))*/ {
+            selectorNatural = new SelectorPorTorneo(
+                    recursosDeAlgoritmoGenetico);
+        }
         recursosDeAlgoritmoGenetico.agregarSelectorNatural(selectorNatural);
 
         //Se establece la clase encargada de la reproduccion y en general del
@@ -180,45 +166,55 @@ public class AlgoritmoGenetico {
         //cromosoma.
         recursosDeAlgoritmoGenetico.setFuncionDeAptitud(funcionDeAptitud);
 
+        operadorDeCruce.setRecursos(recursosDeAlgoritmoGenetico);
+        operadorDeMutacion.setRecursos(recursosDeAlgoritmoGenetico);
+        
         //Se agregan los operadores geneticos de mutacion y de cruce.
         recursosDeAlgoritmoGenetico.agregarOperadorGenetico(operadorDeCruce);
         recursosDeAlgoritmoGenetico.agregarOperadorGenetico(operadorDeMutacion);
 
+        //Clase donde se guardaran los cromosomas de la poblacion
+        Poblacion poblacion = new Poblacion(recursosDeAlgoritmoGenetico);
 
+        //Se llena la poblacion a partir de el cromosoma de muestra establecido
+        //en los recursos (cromosomaInicial).
+        poblacion.llenarPoblacion();
 
-        //...
+        long tiempoDeInicio = System.currentTimeMillis();
+        for (int i = 0; i < numMaxGeneraciones; i++) {
+            reproductor.evolucionar(poblacion, recursosDeAlgoritmoGenetico);
+        }
+        long tiempoDeFin = System.currentTimeMillis();
 
         //FIN Algoritmo
 
         Cromosoma cromCandtSol;
-
-        /**
-         * TODO.
-         *
-         * BORRAR (Solucion simulada para pruebas).
-         */
-        int sol[] = {1, 2, 3, 2, 2, 2, 3, 2, 1};
-
-        cromCandtSol = new CromosomaImpl(numeroDeGenesPorCromosoma);
-        for (int i = 0; i < numeroDeGenesPorCromosoma; i++) {
-            Gen genEntero = new GenEntero(1, numeroDeGenesPorCromosoma);
-            genEntero.setAlelo(sol[i]);
-            cromCandtSol.setGen(i, genEntero);
-        }
-        /**
-         * FIN BORRAR
-         */
+        
+        cromCandtSol = poblacion.getMejorCromosoma();
+        
         int matrizPosibleSolucionCuadroMagico[][] =
                 new int[tamanoCuadroMagico][tamanoCuadroMagico];
+        
+        int numeroDeAlelosRepetidos = 0;
+        List matrizAuxiliarDeAlelosSinRepetir = new ArrayList();
 
         //Se representan los alelos del cromosoma candidato a ser solucion
         //del cuadro magico en una matriz.
         for (int pos = 0; pos < numeroDeGenesPorCromosoma; pos++) {
-            int i = (int) Math.floor(pos / tamanoCuadroMagico);
+            int i = (int) (Math.floor(pos / tamanoCuadroMagico));
             int j = pos % tamanoCuadroMagico;
-            matrizPosibleSolucionCuadroMagico[i][j] = (int) cromCandtSol
-                    .getGen(pos).getAlelo();
+            
+            matrizPosibleSolucionCuadroMagico[i][j] = (int) (cromCandtSol
+                    .getGen(pos).getAlelo());
+            
+            if (!matrizAuxiliarDeAlelosSinRepetir.contains((int) (cromCandtSol
+                    .getGen(pos).getAlelo()))) {
+                matrizAuxiliarDeAlelosSinRepetir.add((int) (cromCandtSol
+                    .getGen(pos).getAlelo()));
+            }
         }
+        numeroDeAlelosRepetidos = numeroDeGenesPorCromosoma -
+                matrizAuxiliarDeAlelosSinRepetir.size();
 
         //Objeto donde se envian los resultados del algoritmo mediante un mapeo.
         Map<String, Object> resultados = new HashMap<>();
@@ -228,7 +224,13 @@ public class AlgoritmoGenetico {
 
         Point[] puntosQueCumplenConSuma = obtenerPuntosQueCoinciden(
                 cromCandtSol);
-        resultados.put(MAP_KEY_LINEAS_QUE_CUMPLEN, puntosQueCumplenConSuma);
+        resultados.put(MAP_KEY_TUPLAS_QUE_CUMPLEN, puntosQueCumplenConSuma);
+        resultados.put(MAP_KEY_NUMERO_DE_TUPLAS_QUE_CUMPLEN,
+                (int)(puntosQueCumplenConSuma.length / tamanoCuadroMagico));
+        resultados.put(MAP_KEY_TIEMPO_TRANSCURRIDO,
+                (tiempoDeFin - tiempoDeInicio));
+        resultados.put(MAP_KEY_NUMERO_DE_ALELOS_REPETIDOS,
+                numeroDeAlelosRepetidos);
 
         ((IGCuadroMagico) parametros.get(MAP_KEY_INTERFAZ_GRAFICA))
                 .mostrarResultadosDeAlgoritmoGenetico(resultados);
@@ -250,7 +252,7 @@ public class AlgoritmoGenetico {
         Map<Integer, List> sumas;
         sumas = new HashMap<>();
 
-        int tamanoDeCuadrado = (int) Math.sqrt(cromosoma.tamano());
+        int tamanoDeCuadrado = (int) (Math.sqrt(cromosoma.tamano()));
         Gen[] genes = cromosoma.getGenes();
 
         int sumasPorLista[] = new int[((tamanoDeCuadrado * 2) + 2)];

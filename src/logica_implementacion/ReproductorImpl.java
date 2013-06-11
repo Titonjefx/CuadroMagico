@@ -1,6 +1,5 @@
 package logica_implementacion;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import logica.*;
@@ -72,12 +71,11 @@ public class ReproductorImpl implements Reproductor {
      */
     protected void aplicarOperadoresGeneticos(Recursos recursos,
             PiscinaDeCromosomas piscinaDeCromosomas) {
-        List<Cromosoma> cromosomasResultantes = new ArrayList<>();
         List<OperadorGenetico> operadoresGeneticos = recursos.getOperadoresGeneticos();
         Iterator iteradorDeOperadores = operadoresGeneticos.iterator();
         while (iteradorDeOperadores.hasNext()) {
-            OperadorGenetico operator = (OperadorGenetico) iteradorDeOperadores.next();
-            operator.operar(piscinaDeCromosomas);
+            OperadorGenetico operador = (OperadorGenetico) iteradorDeOperadores.next();
+            operador.operar(piscinaDeCromosomas);
         }
     }
 

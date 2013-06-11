@@ -10,7 +10,7 @@ import logica_implementacion.Recursos;
  */
 public abstract class SelectorNatural {
 
-    private Recursos recursos;
+    protected Recursos recursos;
 
     /**
      * Constructor.

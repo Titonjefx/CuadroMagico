@@ -22,8 +22,20 @@ public class MapKeyConstantes {
             "matrizCuadroMagico";
     public static final String MAP_KEY_NUMERO_MAX_GENERACIONES =
             "numMaxGeneraciones";
-    public static final String MAP_KEY_LINEAS_QUE_CUMPLEN = "lineasQueCumplen";
+    public static final String MAP_KEY_TUPLAS_QUE_CUMPLEN = "tuplasQueCumplen";
     public static final String MAP_KEY_NUM_CROM_POBLACION = "numCromPoblacion";
     public static final String MAP_KEY_ALGORITMO_COMBINATORIO =
             "algCombinatorio";
+    public static final String MAP_KEY_TIPO_SELECTOR =
+            "tipoSelector";
+    public static final String MAP_KEY_SELECTOR_INGENUO =
+            "Selector Ingenuo";
+    public static final String MAP_KEY_SELECTOR_TORNEO =
+            "Selector Por Torneo";
+    public static final String MAP_KEY_TIEMPO_TRANSCURRIDO =
+            "tiempoTranscurrido";
+    public static final String MAP_KEY_NUMERO_DE_TUPLAS_QUE_CUMPLEN =
+            "numeroTuplasCumplen";
+    public static final String MAP_KEY_NUMERO_DE_ALELOS_REPETIDOS =
+            "alelosRepetidos";
 }

@@ -18,7 +18,7 @@ public class FuncionDeEvaluacionImpl implements FuncionDeEvaluacion {
      */
     @Override
     public boolean esMejor(double valorDeAptitud1, double valorDeAptitud2) {
-        if (valorDeAptitud1 >= valorDeAptitud2) {
+        if (valorDeAptitud1 > valorDeAptitud2) {
             return true;
         } else {
             return false;

@@ -13,6 +13,7 @@ import logica.OperadorGenetico;
  */
 public class OperadorDeCruceCombinatorio implements OperadorGenetico {
 
+    private Recursos recursos;
     /**
      * Cruza los cromosomas en la piscina de cromosomas dejando en esta solo los
      * descendientes de dicho cruce. Vea la interface OperadorGenetico para esta
@@ -35,7 +36,7 @@ public class OperadorDeCruceCombinatorio implements OperadorGenetico {
         }
     }
 
-    private void cruzar(Cromosoma cromosomasPadre, Cromosoma cromosomasMadre) {
+    public void cruzar(Cromosoma cromosomasPadre, Cromosoma cromosomasMadre) {
         Gen genesPadre[] = cromosomasPadre.getGenes();
         Gen genesMadre[] = cromosomasMadre.getGenes();
 
@@ -59,25 +60,69 @@ public class OperadorDeCruceCombinatorio implements OperadorGenetico {
             }
         }
         
-        List<Gen> genesTempPadre = new ArrayList<>();
-        List<Gen> genesTempMadre = new ArrayList<>();
+        List<Integer> genesTempPadre = new ArrayList<>();
+        List<Integer> genesTempMadre = new ArrayList<>();
         int puntero = posAleatoriaMayor;
         for (int i = 0; i < genesPadre.length; i++) {
             if (puntero >= genesPadre.length) {
                 puntero = 0;
             }
-            genesTempPadre.add(genesPadre[puntero]);
-            genesTempMadre.add(genesMadre[puntero]);
+            genesTempPadre.add((Integer)genesPadre[puntero].getAlelo());
+            genesTempMadre.add((Integer)genesMadre[puntero].getAlelo());
             puntero++;
         }
-
-        //Se intercambian los genes del medio
-        for (int i = (posAleatoriaMenor + 1); i < posAleatoriaMayor; i++) {
-            Gen genTemporal = genesPadre[i];
-            genesPadre[i] = genesMadre[i];
-            genesMadre[i] = genTemporal;
-        }
-
         
+        //Se intercambian los genes del medio
+        for (int i = 0; i < genesPadre.length; i++) {
+            if ((i >= (posAleatoriaMenor + 1)) && (i < posAleatoriaMayor)) {
+                Gen genTemporal = genesPadre[i];
+                genesPadre[i] = genesMadre[i];
+                genesMadre[i] = genTemporal;
+            } else {
+                genesPadre[i].setAlelo(new Integer(0));
+                genesMadre[i].setAlelo(new Integer(0));
+            }
+        }
+        
+        int contador = 0;
+        for (int i = 0; i < genesPadre.length; i++) {
+            if (contador == posAleatoriaMenor + 1) {
+                contador = posAleatoriaMayor;
+            }
+            if (!contiene(genesPadre,genesTempPadre.get(i))) {
+                genesPadre[contador].setAlelo(genesTempPadre.get(i));
+                contador++;
+            }
+        }
+        
+        contador = 0;
+        for (int i = 0; i < genesMadre.length; i++) {
+            if (contador == posAleatoriaMenor + 1) {
+                contador = posAleatoriaMayor;
+            }
+            if (!contiene(genesMadre,genesTempMadre.get(i))) {
+                genesMadre[contador].setAlelo(genesTempMadre.get(i));
+                contador++;
+            }
+        }
+    }
+    
+    public boolean contiene(Gen[] genes, Integer alelo) {
+        for (int i = 0; i < genes.length; i++) {
+            if (((Integer)genes[i].getAlelo()).intValue() == alelo.intValue()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void setRecursos(Recursos recursos) {
+        this.recursos = recursos;
+    }
+
+    @Override
+    public Recursos getRecursos() {
+        return recursos;
     }
 }

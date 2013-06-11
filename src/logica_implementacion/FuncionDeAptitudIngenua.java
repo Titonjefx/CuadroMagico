@@ -8,9 +8,8 @@ import logica.FuncionDeAptitud;
 import logica.Gen;
 
 /**
- * Funcion que calcula el valor de aptitud en un cromosoma.
- * Tiene en cuenta que la soluci&oacute;n depende de cada valor de los genes
- * en el cromosoma.
+ * Funcion que calcula el valor de aptitud en un cromosoma. Tiene en cuenta que
+ * la soluci&oacute;n depende de cada valor de los genes en el cromosoma.
  */
 public class FuncionDeAptitudIngenua extends FuncionDeAptitud {
 
@@ -22,49 +21,52 @@ public class FuncionDeAptitudIngenua extends FuncionDeAptitud {
      */
     @Override
     public double evaluar(Cromosoma cromosoma) {
+
         int numeroDeGenes = cromosoma.tamano();
         Gen genes[] = cromosoma.getGenes();
-        List alelosSinRepetir = new ArrayList();
+        List<Integer> alelosSinRepetir = new ArrayList();
         for (int i = 0; i < numeroDeGenes; i++) {
-            if (!alelosSinRepetir.contains(genes[i].getAlelo())) {
-                alelosSinRepetir.add(genes[i].getAlelo());
+            if (!alelosSinRepetir.contains((Integer) genes[i].getAlelo())) {
+                alelosSinRepetir.add((Integer) genes[i].getAlelo());
             }
         }
+        double p1 = (double) alelosSinRepetir.size() / (double) numeroDeGenes;
 
-        double p1 = alelosSinRepetir.size() / numeroDeGenes;
+        int tamanoDeCuadro = (int) (Math.sqrt(numeroDeGenes));
 
-        ArrayList sumasPorLista = new ArrayList((numeroDeGenes * 2) + 2);
-        for (int i = 0; i < numeroDeGenes; i++) {
-            for (int j = 0; j < numeroDeGenes; j++) {
-                int pos = (i - 1) * numeroDeGenes + j;
+        int sumasPorLista[] = new int[((tamanoDeCuadro * 2) + 2)];
+
+        for (int i = 0; i < tamanoDeCuadro; i++) {
+            for (int j = 0; j < tamanoDeCuadro; j++) {
+                int pos = (i * tamanoDeCuadro) + j;
                 if (i == j) {
-                    sumasPorLista.set((2 * numeroDeGenes),
-                            (((Integer) sumasPorLista.get(2 * numeroDeGenes)).intValue()
-                            + ((Integer) genes[pos].getAlelo()).intValue()));
+                    sumasPorLista[(2 * tamanoDeCuadro)] =
+                            ((sumasPorLista[2 * tamanoDeCuadro])
+                            + ((Integer) genes[pos].getAlelo()).intValue());
                 }
-                if (i == ((numeroDeGenes - 1) - j)) {
-                    sumasPorLista.set((2 * numeroDeGenes) + 1,
-                            (((Integer) sumasPorLista.get((2 * numeroDeGenes) + 1)).intValue() + ((Integer) genes[pos].getAlelo()).intValue()));
+                if (i == ((tamanoDeCuadro - 1) - j)) {
+                    sumasPorLista[(2 * tamanoDeCuadro) + 1] =
+                            ((sumasPorLista[(2 * tamanoDeCuadro) + 1]) + ((Integer) genes[pos].getAlelo()).intValue());
                 }
-                sumasPorLista.set(i,
-                        (((Integer) sumasPorLista.get(i)).intValue()
-                        + ((Integer) genes[pos].getAlelo()).intValue()));
+                sumasPorLista[i] =
+                        ((sumasPorLista[i])
+                        + ((Integer) genes[pos].getAlelo()).intValue());
 
-                sumasPorLista.set(numeroDeGenes + j,
-                        (((Integer) sumasPorLista.get(numeroDeGenes
-                        + j)).intValue() + ((Integer) genes[pos].getAlelo()).intValue()));
+                sumasPorLista[tamanoDeCuadro + j] =
+                        ((sumasPorLista[tamanoDeCuadro
+                        + j]) + ((Integer) genes[pos].getAlelo()).intValue());
             }
         }
 
-        ArrayList sumasPorListaSinRepetir = new ArrayList((numeroDeGenes * 2) + 2);
-        for (int i = 0; i < sumasPorLista.size(); i++) {
-            if (!sumasPorListaSinRepetir.contains(sumasPorLista.get(i))) {
-                sumasPorListaSinRepetir.add(sumasPorLista.get(i));
+        ArrayList sumasPorListaSinRepetir = new ArrayList();
+        for (int i = 0; i < sumasPorLista.length; i++) {
+            if (!sumasPorListaSinRepetir.contains(sumasPorLista[i])) {
+                sumasPorListaSinRepetir.add(sumasPorLista[i]);
             }
         }
 
-        double p2 = (((numeroDeGenes * 2) + 1) + sumasPorListaSinRepetir.size())
-                / ((numeroDeGenes * 2) + 2);
+        double p2 = (double) (((tamanoDeCuadro * 2) + 2) - sumasPorListaSinRepetir.size())
+                / (double) ((tamanoDeCuadro * 2) + 2);
 
         return p1 + p2;
     }

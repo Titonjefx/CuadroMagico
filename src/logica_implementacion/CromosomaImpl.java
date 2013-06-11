@@ -29,11 +29,6 @@ public class CromosomaImpl implements Cromosoma {
      */
     private double valorDeAptitud = -1.0000000d;
     /**
-     * Valor que define si este cromosoma ser&aacute; seleccionado para la
-     * pr&oacute;xima generaci&oacute;n.
-     */
-    private boolean esSeleccionadoParaLaSiguienteGeneracion;
-    /**
      * Representa si este cromosoma ha sido evaluado.
      */
     private boolean haSidoEvaluado = false;
@@ -181,23 +176,6 @@ public class CromosomaImpl implements Cromosoma {
     }
 
     /**
-     * Vea la interface de Cromosoma para esta descripci&oacute;n.
-     */
-    @Override
-    public void setEsSeleccionadoParaLaSiguienteGeneracion(
-            boolean esSeleccionado) {
-        this.esSeleccionadoParaLaSiguienteGeneracion = esSeleccionado;
-    }
-
-    /**
-     * Vea la interface de Cromosoma para esta descripci&oacute;n.
-     */
-    @Override
-    public boolean esSeleccionadoParaLaSiguienteGeneracion() {
-        return this.esSeleccionadoParaLaSiguienteGeneracion;
-    }
-
-    /**
      * Se establecen todos los genes de este cromosoma a partir de un gen
      * muestra.
      *
@@ -250,16 +228,16 @@ public class CromosomaImpl implements Cromosoma {
     public Cromosoma clonar() {
         Cromosoma copia = new CromosomaImpl(tamano());
         copia.setEdad(getEdad());
-        copia.setEsSeleccionadoParaLaSiguienteGeneracion(
-                esSeleccionadoParaLaSiguienteGeneracion());
         copia.setHaSidoEvaluado(haSidoEvaluado());
         copia.setValorDeAptitud(getValorDeAptitud());
 
         Gen nuevosGenes[] = new Gen[tamano()];
         for (int i = 0; i < tamano(); i++) {
             nuevosGenes[i] = getGen(i).nuevoGen();
-            nuevosGenes[i].setAlelo(getGen(i).getAlelo());
+            nuevosGenes[i].setAlelo(new Integer((int)getGen(i).getAlelo()));
         }
+        
+        copia.setGenes(nuevosGenes);
 
         return copia;
     }

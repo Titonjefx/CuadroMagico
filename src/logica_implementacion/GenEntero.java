@@ -65,8 +65,8 @@ public class GenEntero implements Gen {
      */
     @Override
     public void setAValorAleatorio() {
-        int valorAleatorio = (int)(((int) (1 + limiteSuperior) - 
-                (int) limiteInferior) * Math.random() + limiteInferior);
+        int valorAleatorio = (int) (((int) (1 + limiteSuperior)
+                - (int) limiteInferior) * Math.random() + limiteInferior);
         setAlelo(new Integer(valorAleatorio));
     }
 
@@ -117,5 +117,20 @@ public class GenEntero implements Gen {
     @Override
     public void setAlelo(Object unValorInterno) {
         valorInterno = (Integer) unValorInterno;
+    }
+
+    /**
+     * Regresa true si el gen de entrada tiene el mismo alelo que este gen.
+     *
+     * @param gen gen de entrada
+     * @return true si el gen de entrada tiene el mismo alelo que este gen
+     */
+    @Override
+    public boolean esIgual(Gen gen) {
+        if (this.getAlelo().intValue() == ((Integer) gen.getAlelo())
+                .intValue()) {
+            return true;
+        }
+        return false;
     }
 }

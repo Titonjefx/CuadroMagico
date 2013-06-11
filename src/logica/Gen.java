@@ -37,4 +37,12 @@ public interface Gen {
      */
     @Override
     String toString();
+
+    /**
+     * Regresa true si el gen de entrada es igual que este gen.
+     *
+     * @param gen gen de entrada
+     * @return true si el gen de entrada es igual que este ge
+     */
+    boolean esIgual(Gen gen);
 }

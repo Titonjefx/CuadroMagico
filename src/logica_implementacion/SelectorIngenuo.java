@@ -7,9 +7,10 @@ import logica.SelectorNatural;
 
 /**
  * Clase que representa un selector natural en el algoritmo gen&eacute;tico.
- * Extiede de la clase abstracta SelectorNatural.
+ * Se seleccionan los cromosomas con mejor aptitud. Extiede de la clase 
+ * abstracta SelectorNatural.
  */
-public class Selector extends SelectorNatural {
+public class SelectorIngenuo extends SelectorNatural {
 
     /**
      * Guarda los cromosomas que son tomados en cuenta para la selecci&oacute;n.
@@ -21,8 +22,9 @@ public class Selector extends SelectorNatural {
      *
      * @param recursos recursos para que el algoritmo gen&eacute;tico funcione
      */
-    public Selector(final Recursos recursos) {
-        cromosomas = new Poblacion(recursos, 0);
+    public SelectorIngenuo(final Recursos recursos) {
+        cromosomas = new Poblacion(recursos);
+        this.recursos = recursos;
     }
 
     /**
@@ -32,7 +34,6 @@ public class Selector extends SelectorNatural {
      */
     @Override
     protected void agregar(final Cromosoma cromosoma) {
-        cromosoma.setEsSeleccionadoParaLaSiguienteGeneracion(false);
         cromosomas.agregarCromosoma(cromosoma);
     }
 
@@ -83,9 +84,7 @@ public class Selector extends SelectorNatural {
 
         Cromosoma cromosomaSeleccionado;
         for (int i = 0; i < puedenSerElegidos; i++) {
-            cromosomaSeleccionado = cromosomas.getCromosoma(i);
-            cromosomaSeleccionado.setEsSeleccionadoParaLaSiguienteGeneracion(
-                    true);
+            cromosomaSeleccionado = cromosomas.getCromosoma(i).clonar();
             piscinaDeCromosomas.agregarCromosoma(cromosomaSeleccionado);
         }
 
@@ -96,9 +95,7 @@ public class Selector extends SelectorNatural {
 
         for (int i = 0; i < aAgregar; i++) {
             cromosomaSeleccionado = cromosomas
-                    .getCromosoma(i % numeroDeCromosomas);
-            cromosomaSeleccionado.setEsSeleccionadoParaLaSiguienteGeneracion(
-                    true);
+                    .getCromosoma(i % numeroDeCromosomas).clonar();
             piscinaDeCromosomas.agregarCromosoma(cromosomaSeleccionado);
         }
     }

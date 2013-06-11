@@ -10,6 +10,7 @@ import logica.OperadorGenetico;
  */
 public class OperadorDeCruceIngenuo implements OperadorGenetico {
 
+    private Recursos recursos;
     /**
      * Cruza los cromosomas en la piscina de cromosomas dejando en esta solo los
      * descendientes de dicho cruce. Vea la interface OperadorGenetico para esta
@@ -43,5 +44,15 @@ public class OperadorDeCruceIngenuo implements OperadorGenetico {
                 genesMadre[i] = genTemporal;
             }
         }
+    }
+
+    @Override
+    public void setRecursos(Recursos recursos) {
+        this.recursos = recursos;
+    }
+
+    @Override
+    public Recursos getRecursos() {
+        return recursos;
     }
 }

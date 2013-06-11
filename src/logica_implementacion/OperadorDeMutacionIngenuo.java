@@ -32,11 +32,6 @@ public class OperadorDeMutacionIngenuo implements OperadorGenetico {
 
         if (piscinaDeCromosomas.tamano() < 1) {
             //No se ha empleado el operador de cruce.
-
-            /**
-             * TODO. Borrar la impresion de linea.
-             */
-            System.out.println("No se ha aplicado el operador de cruce");
             return;
         }
 
@@ -47,8 +42,8 @@ public class OperadorDeMutacionIngenuo implements OperadorGenetico {
             numeroDeGenesPorCromosoma = ((Cromosoma) piscinaDeCromosomas.getCromosomas()
                     .get(0)).tamano();
         }
-        int numeroDeGenesAMutar = (int) porcentajeDeMutacion
-                * numeroDeCromosomas * numeroDeGenesPorCromosoma;
+        int numeroDeGenesAMutar = (int) (porcentajeDeMutacion
+                * numeroDeCromosomas * numeroDeGenesPorCromosoma);
         List cromosomas = piscinaDeCromosomas.getCromosomas();
         for (int i = 0; i < numeroDeGenesAMutar; i++) {
             int posicionCromosomaAleatorio = (int) (Math.random()
@@ -66,10 +61,12 @@ public class OperadorDeMutacionIngenuo implements OperadorGenetico {
         }
     }
 
+    @Override
     public void setRecursos(Recursos recursos) {
         this.recursos = recursos;
     }
 
+    @Override
     public Recursos getRecursos() {
         return this.recursos;
     }
